@@ -5,7 +5,6 @@ import HarvestIcon from "../../assets/imgs/harvest.png";
 import WithdrawIcon from "../../assets/imgs/withdraw.png";
 import { useTranslation } from "react-i18next";
 import { SC } from '../../SmartContracts';
-import bigInt from "big-integer";
 
 
 const StyledStakeItemContainer = styled.div`
@@ -270,7 +269,7 @@ export const StakeItem = ({
                     if (await SC.allowanceV2(account)) return setApproved(true);
                 }
             }
-            if (!initialized && approved) {
+             if (!setInitialized  && approved) {
                 if (version === "1") {
                     setAPR(await SC.APR());
                 } else if (version === "2") {
@@ -281,7 +280,7 @@ export const StakeItem = ({
                 setInterval(() => {
                     updateData();
                 }, 1000);
-            }
+             }
         })();
     }, [
         initialized,

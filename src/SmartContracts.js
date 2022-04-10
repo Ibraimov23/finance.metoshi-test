@@ -244,11 +244,10 @@ static async withdrawV2(account) {
 }
 
 static async APR() {
-    let count1 = await SC.tokenInst.methods.rewardPerToken().call();
-    let count2 = await SC.tokenInst.methods.rewardsDuration().call();
-    count1 = parseInt(count1.toString(18), 18);
-    let count = parseInt(count1) / (parseInt(count2) / 86400) * 360 * 100;
-    return parseInt(count);
+    let count1 = await SC.tokenInst.methods.rewardRate().call();
+    let count2 = await SC.tokenInst.methods.totalSupply().call();
+    let count = ((bigInt(count1) * 86400 * 365) / (bigInt(count2) / 10 **18)  * 100 ) / 10 **18;
+    return Math.trunc(count);
 }
 
 static async APRV2() {
