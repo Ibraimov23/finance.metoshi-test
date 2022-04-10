@@ -219,6 +219,7 @@ export const StakeItem = ({
         }
     }, [ version, account ]);
     const updateData = useCallback(async () => {
+      console.log('d')
       let inStakeRaw, earnedRaw, holdingTimeRaw, stackedTimeRaw,unlockReward,inStakeRawV2;
       if (version === "1") {
           inStakeRaw = await SC.getInStake(account);
@@ -235,10 +236,9 @@ export const StakeItem = ({
            setEarned(earnedRaw.toFixed(2));
            setUnlockedReward(unlockReward);
       }
-       
         if(version === "1") {
           setCanHarvest(true);
-          setCanWithdraw(!(parseInt(inStakeRaw) <= 0) && holdingTimeRaw >= (parseInt(Date.now()) - stackedTimeRaw));
+          setCanWithdraw(!(parseInt(inStakeRaw) <= 0) && holdingTimeRaw >= (+new Date() - stackedTimeRaw));
         }
         else if(version === "2") {
           setCanHarvest(unlockReward > 0);
@@ -260,7 +260,7 @@ export const StakeItem = ({
         updateData();
     }, [ version, updateData ]);
 
-    useEffect(() => {
+    useEffect(() => {  
         (async () => {
             if (account && !approved) {
                 if (version === "1") {
@@ -269,7 +269,7 @@ export const StakeItem = ({
                     if (await SC.allowanceV2(account)) return setApproved(true);
                 }
             }
-             if (!setInitialized  && approved) {
+            if (!initialized && approved) {
                 if (version === "1") {
                     setAPR(await SC.APR());
                 } else if (version === "2") {
