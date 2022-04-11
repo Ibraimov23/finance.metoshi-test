@@ -339,8 +339,8 @@ export const StakeItem = ({
           </p>
       </StyledStakeItemRow> : null }
       { version === "2" ? <StyledStakeItemRow>
-          <span> Unlocked Reward </span>
-          <p>{ unlockedReward }</p>
+          <span>{t("STAKE.UNLOCKED")}</span>
+          {<p>{unlockedReward }</p>}
       </StyledStakeItemRow> : null }
       <StyledStakeItemRowWithButton>
           <StyledStakeItemTextWithButton>
