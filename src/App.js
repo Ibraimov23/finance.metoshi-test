@@ -168,14 +168,13 @@ function App() {
         setActive(true);
     }
 
-
-    let stake = useCallback(async amount => {
-        if (stakingVersion === "1") {
-            await SC.stake(account, amount);
-        } else if (stakingVersion === "2") {
-            await SC.stakeV2(account, amount);
-        }
-    });
+     let stake = useCallback(async amount => {
+         if (stakingVersion === "1") {
+             await SC.stake(account, amount);
+         } else if (stakingVersion === "2") {
+             await SC.stakeV2(account, amount);
+         }
+     });
 
 
     return (
@@ -209,8 +208,8 @@ function App() {
                     update={ update }
                     account={ account }
                     onUseConnection={ () => setPopUpVisibility(true) }
-                    onStake={ () => { setStakePopUpVisibility(true); setStakingVersion("1") } }
-                    onStakeV2={ () => { setStakePopUpVisibility(true); setStakingVersion("2") } }
+                     onStake={ () => {setStakePopUpVisibility(true); setStakingVersion("1") } }
+                     onStakeV2={ () => {setStakePopUpVisibility(true);  setStakingVersion("2")} }
                     needToApprove={ needToApprove }
                 />
             </StyledAppContainer>

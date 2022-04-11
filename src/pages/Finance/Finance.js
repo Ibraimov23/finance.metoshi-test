@@ -61,18 +61,18 @@ export const Finance = ({
     provider
 }) => {
     const { t } = useTranslation();
-
+    
     const handleUseConnection = useCallback(() => {
         onUseConnection();
     }, [ onUseConnection ])
 
-    const handleStake = useCallback(() => {
-        onStake();
+     const handleStake = useCallback(() => {
+         onStake();
     }, [ onStake ])
 
-    const handleStake2 = useCallback(() => {
-        onStakeV2();
-  }, [ onStakeV2 ])
+     const handleStake2 = useCallback(() => {
+         onStakeV2();
+   }, [ onStakeV2 ])
 
     return (
         <div>
