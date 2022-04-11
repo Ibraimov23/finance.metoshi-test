@@ -237,7 +237,7 @@ export const StakeItem = ({
       }
         if(version === "1") {
           setCanHarvest(true);
-          setCanWithdraw(!(parseInt(inStakeRaw) <= 0) && holdingTimeRaw >= (Math.floor(Date.now() / 1000) - stackedTimeRaw));
+          setCanWithdraw(!(parseInt(inStakeRaw) <= 0) && !(holdingTimeRaw >= (Math.floor(Date.now() / 1000) - stackedTimeRaw)));
         }
         else if(version === "2") {
           setCanHarvest(unlockReward > 0);
@@ -269,7 +269,7 @@ export const StakeItem = ({
                 }
             }
         
-             if (!initialized && approved) {
+            //  if (!initialized && approved) {
                 if (version === "1") {
                     setAPR(await SC.APR());
                 } else if (version === "2") {
@@ -280,7 +280,7 @@ export const StakeItem = ({
                    updateData();
                }, 1000);
                
-              }
+              // }
         })();
     }, [
         initialized,
