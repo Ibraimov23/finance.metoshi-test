@@ -176,7 +176,6 @@ function App() {
          }
      });
 
-
     return (
         <StyledAppWrapper>
             <StakePopUp visible={stakePopUpVisible} inStake={ stakingVersion === "1" ? SC.inStake : SC.inStakeV2 } onClose={v => setStakePopUpVisibility(false)} onConfirm={

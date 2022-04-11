@@ -235,6 +235,7 @@ export const StakeItem = ({
            setEarned(earnedRaw.toFixed(2));
            setUnlockedReward(unlockReward);
       }
+      console.log('ds')
         if(version === "1") {
           setCanHarvest(true);
           setCanWithdraw(!(parseInt(inStakeRaw) <= 0) && !(holdingTimeRaw >= (Math.floor(Date.now() / 1000) - stackedTimeRaw)));
@@ -269,7 +270,7 @@ export const StakeItem = ({
                 }
             }
         
-            //  if (!initialized && approved) {
+              if (!initialized && approved) {
                 if (version === "1") {
                     setAPR(await SC.APR());
                 } else if (version === "2") {
@@ -280,7 +281,7 @@ export const StakeItem = ({
                    updateData();
                }, 1000);
                
-              // }
+               }
         })();
     }, [
         initialized,
@@ -290,97 +291,96 @@ export const StakeItem = ({
         approved,
         setAPR
     ]);
-
     return (
-        <StyledStakeItemContainer>
-            { version === "1" ? <StyledStakeItemHeader>
-                <p>
-                    {t("STAKE.STAKE_TITLE1")}
-                </p>
-                <StyledStakeItemHelp>
-                <span class="i">
-                      <img src={HelpIcon} alt="" />
-			                <span class="tooltip">			
-                      Your deposit will be locked for 30 days. However, the rewards will always be available for withdrawal.
-		          	</span>
-              	</span>
-                </StyledStakeItemHelp>
-            </StyledStakeItemHeader> : version == "2" ? <StyledStakeItemHeader>
-                <p>
-                    {t("STAKE.STAKE_TITLE2")}
-                </p>
-                <StyledStakeItemHelp>
-                <span class="i">
-                      <img src={HelpIcon} alt="" />
-			                <span class="tooltip">			
-                      Your deposit is always available for withdrawal. However, the rewards will start unlocking after 30 days.
-		          	</span>
-              	</span>
-                </StyledStakeItemHelp>
-            </StyledStakeItemHeader> : null}
-            <StyledStakeItemRow>
-                <StyledAPR>
-                    <span> {t("STAKE.APR")}</span>
-                    <StyledStakeItemHelp>
-                     <span class="i">
-                      <img src={HelpIcon} alt="" />
-			                <span class="tooltip">			
-                       APR is not fixed and can change constantly
-		          	</span>
-              	</span>
-                </StyledStakeItemHelp>
-                </StyledAPR>
-                <p>{ APR ? `${APR}%` : '-' }</p>
-            </StyledStakeItemRow>
-            { version === "2" ? <StyledStakeItemRow>
-                <span> {t("STAKE.EARNED")}</span>
-                <p>
-                    {earnedText}
-                </p>
-            </StyledStakeItemRow> : null }
-            { version === "2" ? <StyledStakeItemRow>
-                <span> Unlocked Reward </span>
-                <p>{ unlockedReward }</p>
-            </StyledStakeItemRow> : null }
-            <StyledStakeItemRowWithButton>
-                <StyledStakeItemTextWithButton>
-                    <span>
-                        {earnedText} {t("STAKE.EARNED")}
-                    </span>
-                    <p>{ earned }</p>
-                </StyledStakeItemTextWithButton>
+      <StyledStakeItemContainer>
+      { version === "1" ? <StyledStakeItemHeader>
+          <p>
+              {t("STAKE.STAKE_TITLE1")}
+          </p>
+          <StyledStakeItemHelp>
+          <span class="i">
+                <img src={HelpIcon} alt="" />
+                <span class="tooltip">			
+                {t("STAKE.HELPSTAKE1")}
+          </span>
+          </span>
+          </StyledStakeItemHelp>
+      </StyledStakeItemHeader> : version == "2" ? <StyledStakeItemHeader>
+          <p>
+              {t("STAKE.STAKE_TITLE2")}
+          </p>
+          <StyledStakeItemHelp>
+          <span class="i">
+                <img src={HelpIcon} alt="" />
+                <span class="tooltip">			
+                {t("STAKE.HELPSTAKE2")}
+          </span>
+          </span>
+          </StyledStakeItemHelp>
+      </StyledStakeItemHeader> : null}
+      <StyledStakeItemRow>
+          <StyledAPR>
+              <span> {t("STAKE.APR")}</span>
+              <StyledStakeItemHelp>
+               <span class="i">
+                <img src={HelpIcon} alt="" />
+                <span class="tooltip">			
+                {t("STAKE.HELPAPR")}
+          </span>
+          </span>
+          </StyledStakeItemHelp>
+          </StyledAPR>
+          <p>{ APR ? `${APR}%` : '-' }</p>
+      </StyledStakeItemRow>
+      { version === "2" ? <StyledStakeItemRow>
+          <span> {t("STAKE.REWARD")}</span>
+          <p>
+              {earnedText}
+          </p>
+      </StyledStakeItemRow> : null }
+      { version === "2" ? <StyledStakeItemRow>
+          <span> Unlocked Reward </span>
+          <p>{ unlockedReward }</p>
+      </StyledStakeItemRow> : null }
+      <StyledStakeItemRowWithButton>
+          <StyledStakeItemTextWithButton>
+              <span>
+                  {earnedText} {t("STAKE.EARNED")}
+              </span>
+              <p>{ earned }</p>
+          </StyledStakeItemTextWithButton>
 
-                <StyledStakeItemButton activeButton={ approved && canHarvest } onClick={ approved && canHarvest ? harvest : () => {} }>
-                    {t("STAKE.HARVEST")} <img src={HarvestIcon} alt="" />
-                </StyledStakeItemButton>
-            </StyledStakeItemRowWithButton>
-            <StyledStakeItemRowWithButton>
-                <StyledStakeItemTextWithButton>
-                    <span>METO {t("STAKE.INSTAKE")}</span>
-                    <p>{ inStake }</p>
-                </StyledStakeItemTextWithButton>
+          <StyledStakeItemButton activeButton={ approved && canHarvest } onClick={ approved && canHarvest ? harvest : () => {} }>
+              {t("STAKE.HARVEST")} <img src={HarvestIcon} alt="" />
+          </StyledStakeItemButton>
+      </StyledStakeItemRowWithButton>
+      <StyledStakeItemRowWithButton>
+          <StyledStakeItemTextWithButton>
+              <span>METO {t("STAKE.INSTAKE")}</span>
+              <p>{ inStake }</p>
+          </StyledStakeItemTextWithButton>
 
-                <StyledStakeItemButton activeButton={ approved && canWithdraw} onClick={ approved && canWithdraw ? withdraw : () => {} }>
-                    {(activeButton && `${t("STAKE.STAKE")} METO`) ||
-                        `${t("STAKE.WITHDRAW")}`}{" "}
-                    <img src={WithdrawIcon} alt="" />
-                </StyledStakeItemButton>
-            </StyledStakeItemRowWithButton>
-            <StyledStakeItemRowWithButton>
-                <StyledStakeItemButton onClick={ approved ? handleStake : () => {} } activeButton={ approved } style={{ width: '100%' }}>
-                    Stake
-                </StyledStakeItemButton>
-            </StyledStakeItemRowWithButton>
-            <StyledStakeItemRowWithButton>
-                <StyledStakeItemButton onClick={ needToApprove ? (!approved ? approve : () => {}) : handleUseConnection } activeButton={ !approved } style={{ width: '100%' }}>
-                    { needToApprove ? (approved ? 'Approved' : 'Approve') : 'Connect Wallet' }
-                    <img src={WithdrawIcon} alt="" />
-                </StyledStakeItemButton>
-            </StyledStakeItemRowWithButton>
-            { account ? 
-                <StyledStakeItemAccountId>Connected as { `${account.slice(0, 6)}...${account.slice(38, 42)}` }</StyledStakeItemAccountId>
-                : null
-            }
-        </StyledStakeItemContainer>
-    );
+          <StyledStakeItemButton activeButton={ approved && canWithdraw} onClick={ approved && canWithdraw ? withdraw : () => {} }>
+              {(activeButton && `${t("STAKE.STAKE")} METO`) ||
+                  version == "1" ? `${t("STAKE.WITHDRAW1")}` : `${t("STAKE.WITHDRAW2")}`}{" "}
+              <img src={WithdrawIcon} alt="" />
+          </StyledStakeItemButton>
+      </StyledStakeItemRowWithButton>
+      <StyledStakeItemRowWithButton>
+          <StyledStakeItemButton onClick={ approved ? handleStake : () => {} } activeButton={ approved } style={{ width: '100%' }}>
+              Stake
+          </StyledStakeItemButton>
+      </StyledStakeItemRowWithButton>
+      <StyledStakeItemRowWithButton>
+          <StyledStakeItemButton onClick={ needToApprove ? (!approved ? approve : () => {}) : handleUseConnection } activeButton={ !approved } style={{ width: '100%' }}>
+              { needToApprove ? (approved ? 'Approved' : 'Approve') : 'Connect Wallet' }
+              <img src={WithdrawIcon} alt="" />
+          </StyledStakeItemButton>
+      </StyledStakeItemRowWithButton>
+      { account ? 
+          <StyledStakeItemAccountId>Connected as { `${account.slice(0, 6)}...${account.slice(38, 42)}` }</StyledStakeItemAccountId>
+          : null
+      }
+  </StyledStakeItemContainer>
+);
 };

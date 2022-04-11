@@ -91,7 +91,7 @@ export class SC {
         timestamp: 1648163253
     };
 
-    static inStake = 0;
+    static setStake = 0;
     static inStakeV2 = 0;
     static web3 = new Web3('https://xyui2wsu8upa.usemoralis.com:2053/server');
      
@@ -171,6 +171,7 @@ static async getEarned(account) {
 
 static async getInStake(account) {
     const balance = bigInt(await SC.tokenInst.methods.balanceOf(account).call());
+    SC.inStake = String(balance.value / 10n ** 18n);
     return String(balance.value / 10n ** 18n);
 }
 
