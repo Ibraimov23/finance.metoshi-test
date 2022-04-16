@@ -3,9 +3,10 @@ import styled from "styled-components";
 import HelpIcon from "../../assets/imgs/help-icon.png";
 import HarvestIcon from "../../assets/imgs/harvest.png";
 import WithdrawIcon from "../../assets/imgs/withdraw.png";
+import SleepIcon from "../../assets/imgs/zzz.svg";
 import { useTranslation } from "react-i18next";
 import { SC } from '../../SmartContracts';
-
+import '../../index.css';
 
 const StyledStakeItemContainer = styled.div`
   z-index: 10;
@@ -16,7 +17,12 @@ const StyledStakeItemContainer = styled.div`
   padding: 32px;
   @media (max-width: 600px) {
     min-width: auto !important;
-    padding: 12px;
+    border-radius: 15px;
+    padding-right: 8px;
+    padding-left: 8px;
+    padding-top: 22px;
+    padding-bottom: 22px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -28,9 +34,10 @@ const StyledStakeItemHeader = styled.div`
   font-size: 24px;
   line-height: 29px;
   letter-spacing: 0.02em;
+  -webkit-justify-content: space-between;
   color: #ffffff;
   p {
-    margin-right: 10px;
+    margin: auto;
   }
 `;
 
@@ -59,7 +66,7 @@ const StyledStakeItemRowWithButton = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 24px;
+  margin-top: 25px;
   gap: 20px;
 `;
 
@@ -110,6 +117,7 @@ const StyledStakeItemTextWithButton = styled.div`
     font-size: 20px;
     line-height: 140%;
     letter-spacing: 0.02em;
+    font-family: Georama
   }
   p {
     font-weight: 700;
@@ -173,7 +181,6 @@ const StyledStakeItemHelp = styled.span`
 .i .tooltip:before{position:absolute;content:'';left:calc(50% - 4px);bottom:-4px;width:8px;height:4px;background-image: url("data:image/svg+xml,%3Csvg width='8' height='4' viewBox='0 0 8 4' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.01107 4L8 0H0L4.01107 4Z' fill='black'/%3E%3C/svg%3E%0A");}
 `;
 
-
 export const StakeItem = ({
     version,
     earnedText,
@@ -235,7 +242,6 @@ export const StakeItem = ({
            setEarned(earnedRaw.toFixed(2));
            setUnlockedReward(unlockReward);
       }
-      console.log('ds')
         if(version === "1") {
           setCanHarvest(true);
           setCanWithdraw(!(parseInt(inStakeRaw) <= 0) && !(holdingTimeRaw >= (Math.floor(Date.now() / 1000) - stackedTimeRaw)));
@@ -292,32 +298,34 @@ export const StakeItem = ({
         setAPR
     ]);
     return (
-      <StyledStakeItemContainer>
-      { version === "1" ? <StyledStakeItemHeader>
-          <p>
-              {t("STAKE.STAKE_TITLE1")}
-          </p>
-          <StyledStakeItemHelp>
-          <span class="i">
-                <img src={HelpIcon} alt="" />
-                <span class="tooltip">			
-                {t("STAKE.HELPSTAKE1")}
-          </span>
-          </span>
-          </StyledStakeItemHelp>
-      </StyledStakeItemHeader> : version == "2" ? <StyledStakeItemHeader>
-          <p>
-              {t("STAKE.STAKE_TITLE2")}
-          </p>
-          <StyledStakeItemHelp>
-          <span class="i">
-                <img src={HelpIcon} alt="" />
-                <span class="tooltip">			
-                {t("STAKE.HELPSTAKE2")}
-          </span>
-          </span>
-          </StyledStakeItemHelp>
-      </StyledStakeItemHeader> : null}
+      <div>
+        {version == "1" || version == "2" ?
+        <StyledStakeItemContainer>
+            { version === "1" ? <StyledStakeItemHeader>
+                <p>
+                    {t("STAKE.STAKE_TITLE1")}
+                </p>
+                <StyledStakeItemHelp>
+                <span class="i">
+                      <img src={HelpIcon} alt="" />
+			                <span class="tooltip">			
+                      Your deposit will be locked for 30 days. However, the rewards will always be available for withdrawal.
+		          	</span>
+              	</span>
+                </StyledStakeItemHelp>
+            </StyledStakeItemHeader> : version == "2" ? <StyledStakeItemHeader>
+                <p>
+                    {t("STAKE.STAKE_TITLE2")}
+                </p>
+                <StyledStakeItemHelp>
+                <span class="i">
+                      <img src={HelpIcon} alt="" />
+			                <span class="tooltip">			
+                      Your deposit is always available for withdrawal. However, the rewards will start unlocking after 30 days.
+		          	</span>
+              	</span>
+                </StyledStakeItemHelp>
+            </StyledStakeItemHeader> : null}
       <StyledStakeItemRow>
           <StyledAPR>
               <span> {t("STAKE.APR")}</span>
@@ -330,7 +338,7 @@ export const StakeItem = ({
           </span>
           </StyledStakeItemHelp>
           </StyledAPR>
-          <p>{ APR ? `${APR}%` : '-' }</p>
+          <p> {APR ? `${APR}%` : '-' }</p>
       </StyledStakeItemRow>
       { version === "2" ? <StyledStakeItemRow>
           <span> {t("STAKE.REWARD")}</span>
@@ -381,6 +389,134 @@ export const StakeItem = ({
           <StyledStakeItemAccountId>Connected as { `${account.slice(0, 6)}...${account.slice(38, 42)}` }</StyledStakeItemAccountId>
           : null
       }
+</StyledStakeItemContainer>
+
+: version == "3" || version == "4" ? 
+<StyledStakeItemContainer>
+{ version === "3" ? <StyledStakeItemHeader>
+    <p>
+        Swap METO to OSHI
+    </p>
+    <StyledStakeItemHelp>
+    <span class="i">
+          <img src={HelpIcon} alt="" />
+          <span class="tooltip">			
+          You can swap your METO to OSHI at the current rate.
+          For example: change 1000 METO to OSHI at the rate of 1000.
+          Therefore you will give 1000 METO and get 1 OSHI
+    </span>
+    </span>
+    </StyledStakeItemHelp>
+</StyledStakeItemHeader> : version == "4" ? <StyledStakeItemHeader>
+    <p>
+        Stake METO - Earn NFT
+    </p>
+    <StyledStakeItemHelp>
+    <span class="i">
+          <img src={HelpIcon} alt="" />
+          <span class="tooltip">			
+          This service is under development, you will be able to use it very soon.
+    </span>
+    </span>
+    </StyledStakeItemHelp>
+</StyledStakeItemHeader> : null}
+
+{ version === "3" ? <StyledStakeItemRow>
+<StyledAPR>
+  <span>Rate</span>
+  <StyledStakeItemHelp>
+   <span class="i">
+    <img src={HelpIcon} alt="" />
+    <span class="tooltip">	
+        Rate displays how much METO costs 1 OSHI	
+    </span>
+   </span>
+  </StyledStakeItemHelp>
+</StyledAPR>
+<p style={{'color': '#c2abcb'}}>1 OSHI = 1000 METO</p>
+</StyledStakeItemRow> : version == "4" ? <StyledStakeItemRow>
+ <StyledAPR>
+   <span> {t("STAKE.APR")}</span>
+   <StyledStakeItemHelp>
+       <span class="i">
+           <img src={HelpIcon} alt="" />
+               <span class="tooltip">			
+                
+               </span>
+       </span>
+   </StyledStakeItemHelp>
+</StyledAPR>
+  <p> {APR ? `${APR}%` : '-' }</p>
+</StyledStakeItemRow>
+: null}
+  {version == "3" ? <StyledStakeItemRowWithButton>
+     <div>
+        <StyledStakeItemTextWithButton style={{'margin-top': '25px'}}>
+           <span>
+               Available OSHI <br />1000
+          </span>
+        </StyledStakeItemTextWithButton>
+         <StyledStakeItemTextWithButton style={{'margin-top': '30px'}}>
+           <span>Remaining OSHI <br />5000</span> 
+        </StyledStakeItemTextWithButton>
+     </div>
+     <StyledStakeItemButton activeButton={ approved && canHarvest } onClick={ approved && canHarvest ? harvest : () => {} } style={{'padding-top': '40px','padding-bottom': '40px','padding-right': '12.5px', 'padding-left': '12.5px'}}>
+           Claim
+      </StyledStakeItemButton>
+  </StyledStakeItemRowWithButton>
+  : version == "4" ?
+  <div>
+  <StyledStakeItemRowWithButton>
+  <StyledStakeItemTextWithButton>
+      <span>
+          {earnedText} {t("STAKE.EARNED")}
+      </span>
+      <p>{ earned }</p>
+  </StyledStakeItemTextWithButton>
+
+  <StyledStakeItemButton activeButton={ approved && canHarvest } onClick={ approved && canHarvest ? harvest : () => {} }>
+      {t("STAKE.HARVEST")} <img src={HarvestIcon} alt="" />
+  </StyledStakeItemButton>
+</StyledStakeItemRowWithButton>
+<StyledStakeItemRowWithButton>
+  <StyledStakeItemTextWithButton>
+      <span>METO {t("STAKE.INSTAKE")}</span>
+      <p>{ inStake }</p>
+  </StyledStakeItemTextWithButton>
+
+  <StyledStakeItemButton activeButton={ approved && canWithdraw} onClick={ approved && canWithdraw ? withdraw : () => {} }>
+      {(activeButton && `${t("STAKE.STAKE")} METO`) ||
+          version == "1" ? `${t("STAKE.WITHDRAW1")}` : `${t("STAKE.WITHDRAW2")}`}{" "}
+      <img src={WithdrawIcon} alt="" />
+  </StyledStakeItemButton>
+</StyledStakeItemRowWithButton>
+</div>: null}
+   
+   {version == "3" ? <div>
+    <StyledStakeItemRowWithButton>
+          <StyledStakeItemButton onClick={ approved ? handleStake : () => {} } activeButton={ approved } style={{ width: '100%' }}>
+              Swap METO to OSHI
+          </StyledStakeItemButton>
+   </StyledStakeItemRowWithButton>
+      <StyledStakeItemRowWithButton>
+      <StyledStakeItemButton onClick={ needToApprove ? (!approved ? approve : () => {}) : handleUseConnection } activeButton={ !approved } style={{ width: '100%' }}>
+         { needToApprove ? (approved ? 'Approved' : 'Approve') : 'Connect Wallet' }
+         <img src={WithdrawIcon} alt="" />
+       </StyledStakeItemButton>
+</StyledStakeItemRowWithButton>
+{ account ? 
+<StyledStakeItemAccountId>Connected as { `${account.slice(0, 6)}...${account.slice(38, 42)}` }</StyledStakeItemAccountId>
+: null
+}
+</div> : version == "4" ? <StyledStakeItemRowWithButton>
+      <StyledStakeItemButton activeButton={true } className="sleep">
+         Soon
+         <img src={SleepIcon} alt="" width="18" height="18"/>
+       </StyledStakeItemButton>
+</StyledStakeItemRowWithButton> : null}
+
   </StyledStakeItemContainer>
+   : null}
+  </div>
 );
 };

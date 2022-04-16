@@ -44,6 +44,15 @@ const StyledStakeItemContainer = styled.div`
   gap: 32px;
   align-items: flex-start;
 `;
+const StyledStakeItemContainer2 = styled.div`
+  margin-top: 62px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 32px;
+  align-items: flex-start;
+`;
 
 const StyledHeaderDevider = styled(HeaderDevider)`
   @media (max-width: 875px) {
@@ -108,6 +117,32 @@ export const Finance = ({
                     provider={ provider }
                 />
             </StyledStakeItemContainer>
+            <StyledStakeItemContainer2>
+            <StakeItem
+                    key="3"
+                    version="3"
+                    earnedText="METO"
+                    activeButton={false}
+                    onUseConnection={ handleUseConnection }
+                    account={ account }
+                    onStake={ handleStake2 }
+                    needToApprove={ needToApprove }
+                    update={ update }
+                    provider={ provider }
+                />
+                <StakeItem
+                    key="4"
+                    version="4"
+                    earnedText="METO"
+                    activeButton={false}
+                    onUseConnection={ handleUseConnection }
+                    account={ account }
+                    onStake={ handleStake2 }
+                    needToApprove={ needToApprove }
+                    update={ update }
+                    provider={ provider }
+                />
+            </StyledStakeItemContainer2>
         </div>
     );
 };
