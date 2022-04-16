@@ -446,7 +446,7 @@ export const StakeItem = ({
        </span>
    </StyledStakeItemHelp>
 </StyledAPR>
-  <p> {APR ? `${APR}%` : '-' }</p>
+  <p> {'-' }</p>
 </StyledStakeItemRow>
 : null}
   {version == "3" ? <StyledStakeItemRowWithButton>
@@ -460,7 +460,7 @@ export const StakeItem = ({
            <span>Remaining OSHI <br />5000</span> 
         </StyledStakeItemTextWithButton>
      </div>
-     <StyledStakeItemButton activeButton={ approved && canHarvest } onClick={ approved && canHarvest ? harvest : () => {} } style={{'padding-top': '40px','padding-bottom': '40px','padding-right': '12.5px', 'padding-left': '12.5px'}}>
+     <StyledStakeItemButton activeButton={ false } style={{'padding-top': '40px','padding-bottom': '40px','padding-right': '12.5px', 'padding-left': '12.5px'}}>
            Claim
       </StyledStakeItemButton>
   </StyledStakeItemRowWithButton>
@@ -474,7 +474,7 @@ export const StakeItem = ({
       <p>{ earned }</p>
   </StyledStakeItemTextWithButton>
 
-  <StyledStakeItemButton activeButton={ approved && canHarvest } onClick={ approved && canHarvest ? harvest : () => {} }>
+  <StyledStakeItemButton activeButton={ false }>
       {t("STAKE.HARVEST")} <img src={HarvestIcon} alt="" />
   </StyledStakeItemButton>
 </StyledStakeItemRowWithButton>
@@ -484,9 +484,8 @@ export const StakeItem = ({
       <p>{ inStake }</p>
   </StyledStakeItemTextWithButton>
 
-  <StyledStakeItemButton activeButton={ approved && canWithdraw} onClick={ approved && canWithdraw ? withdraw : () => {} }>
-      {(activeButton && `${t("STAKE.STAKE")} METO`) ||
-          version == "1" ? `${t("STAKE.WITHDRAW1")}` : `${t("STAKE.WITHDRAW2")}`}{" "}
+  <StyledStakeItemButton activeButton={false}>
+      Windraw
       <img src={WithdrawIcon} alt="" />
   </StyledStakeItemButton>
 </StyledStakeItemRowWithButton>
@@ -494,13 +493,13 @@ export const StakeItem = ({
    
    {version == "3" ? <div>
     <StyledStakeItemRowWithButton>
-          <StyledStakeItemButton onClick={ approved ? handleStake : () => {} } activeButton={ approved } style={{ width: '100%' }}>
+          <StyledStakeItemButton activeButton={false } style={{ width: '100%' }}>
               Swap METO to OSHI
           </StyledStakeItemButton>
    </StyledStakeItemRowWithButton>
       <StyledStakeItemRowWithButton>
-      <StyledStakeItemButton onClick={ needToApprove ? (!approved ? approve : () => {}) : handleUseConnection } activeButton={ !approved } style={{ width: '100%' }}>
-         { needToApprove ? (approved ? 'Approved' : 'Approve') : 'Connect Wallet' }
+      <StyledStakeItemButton activeButton={ true } style={{ width: '100%' }}>
+          Connect Wallet
          <img src={WithdrawIcon} alt="" />
        </StyledStakeItemButton>
 </StyledStakeItemRowWithButton>
