@@ -110,16 +110,17 @@ const networks = {
 
 const changeNetwork = async ({ networkName, setError }) => {
     try {
-        if (window.ethereum) {
-            await window.ethereum.request({
-                method: "wallet_addEthereumChain",
-                params: [
+         if (window.ethereum) {
+             await window.ethereum.request({
+                 method: "wallet_addEthereumChain",
+                 params: [
                     {
                         ...networks[networkName]
                     }
-                ]
-            });
-        }
+                 ]
+
+             });
+         }
         // if (walletConnectProvider) {
         //     await walletConnectProvider.request({
         //         method: "wallet_addEthereumChain",
@@ -134,8 +135,8 @@ const changeNetwork = async ({ networkName, setError }) => {
         setError(err.message);
     }
 }
-
-changeNetwork({ networkName: 'bsc', setError: console.log });
+// changeNetwork({ networkName: 'bsc', setError: console.log });
+ changeNetwork({ networkName: 'bsc tesnet', setError: console.log });
 
 
 
@@ -175,11 +176,19 @@ function App() {
              await SC.stakeV2(account, amount);
          }
      });
+     let swap = useCallback(async amount => {
+            await SC.swap(account, amount);
+    });
     return (
         <StyledAppWrapper>
             <StakePopUp version={ stakingVersion } visible={stakePopUpVisible} inStake={ stakingVersion === "1" ? SC.inStake : SC.inStakeV2 } onClose={v => setStakePopUpVisibility(false)} onConfirm={
                 async amount => {
                     await stake(amount);
+                    setStakePopUpVisibility(false);
+                    setUpdate(true);
+                }}
+                onSwapConfirm={ async amount => {
+                    await swap(amount);
                     setStakePopUpVisibility(false);
                     setUpdate(true);
                 }

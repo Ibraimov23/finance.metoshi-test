@@ -110,7 +110,7 @@ const StyledStakeItemButton = styled.a`
 `;
 
 
-export const StakePopUp = ({version, visible, onClose, onConfirm, inStake }) => {
+export const StakePopUp = ({version, visible, onClose, onConfirm, onSwapConfirm, inStake }) => {
     let [ amount, setAmount ] = useState(0);
 
     const handleClose = useCallback(() => {
@@ -120,6 +120,10 @@ export const StakePopUp = ({version, visible, onClose, onConfirm, inStake }) => 
     const handleConfirm = useCallback(() => {
         onConfirm(amount);
     }, [ onConfirm, amount ]);
+    
+    const handleSwapConfirm = useCallback(() => {
+        onSwapConfirm(amount);
+    }, [ onSwapConfirm, amount ]);
 
     const handleInputChange = event => {
         setAmount(+event.target.value);
@@ -160,7 +164,7 @@ export const StakePopUp = ({version, visible, onClose, onConfirm, inStake }) => 
                     Cancel
                 </span>
             </StyledStakeItemButton>
-            <StyledStakeItemButton onClick={ () => { handleConfirm() } } activeButton={ true }>
+            <StyledStakeItemButton onClick={ () => { handleSwapConfirm() } } activeButton={ true }>
                 <span>
                     Confirm
                 </span>

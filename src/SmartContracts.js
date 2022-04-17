@@ -1,6 +1,7 @@
 import tokenABI from './assets/data/tokenABI.json';
 import stakingABI from './assets/data/stakingABI.json';
 import stakingV2ABI from './assets/data/stakingV2ABI.json';
+import swappingABI from './assets/data/swappingABI.json';
 import { ethers } from "ethers";
 import Web3 from 'web3';
 import BigNumber from "bignumber.js";
@@ -76,9 +77,11 @@ export class SC {
     static tokenContract;
     static stakingContract;
     static stakingContractV2;
+    static swappingContractAddress;
     static web3ojb;
     static tokenInst;
     static tokenInst2;
+    static tokenSwap;
     static rewardV2;
     static config = {
         mainChainId: 56,
@@ -87,6 +90,7 @@ export class SC {
         // stakingContractAddress: '0xaA03e1110de1515976fAEEA19817dA81AfA44dbE',
         stakingContractAddress: '0xbBD5c7139d50A4eFB6A03534E59CcA285faBa051',
         stakingContractV2Address: '0x6CCF448bAE762431B2Bae046b85fD730313Cbef3',
+        swappingContractAddress: '0xAa5a2916FB43D189a183C22a673BAB9292667d83',
         mainWallet: '0x8B4754ae99F1e595481029c6835C6931442f5f02',
         timestamp: 1648163253
     };
@@ -96,11 +100,9 @@ export class SC {
      
 static async init(_provider) {
     SC.web3ojb = new Web3(_provider);
-    
-    // let acc = await SC.web3ojb.eth.getAccounts()
-    // console.log(acc)
-    SC.tokenInst2 = new SC.web3ojb.eth.Contract(stakingV2ABI, SC.config.stakingContractV2Address)
     SC.tokenInst = new SC.web3ojb.eth.Contract(stakingABI, SC.config.stakingContractAddress)
+    SC.tokenInst2 = new SC.web3ojb.eth.Contract(stakingV2ABI, SC.config.stakingContractV2Address)
+    SC.tokenSwap = new SC.web3ojb.eth.Contract(swappingABI, SC.config.swappingContractAddress)
     const provider = new ethers.providers.Web3Provider(_provider), signer = provider.getSigner();
 
     if (!SC.tokenContract) {
@@ -147,8 +149,6 @@ static async allowanceV2(account) {
 }
 
 static async approve() {
-    let acc = await SC.web3ojb.eth.getAccounts()
-    console.log(acc)
      const bigNumberValue = ethers.utils.parseEther((1000000000000000000000000000n).toString());
      const contract = SC.tokenContract;
     
@@ -271,6 +271,33 @@ static async getUnlockedRewardV2(account) {
          for(let i = 0; i < 10; i++) {
             await SC.tokenInst2.methods.calcRewardByIndex(account, i, 0).call().then(function (result) {
                 get = get + parseInt(result.reward)
+            }).catch(function (err) {
+            });
+         }
+       return parseInt(get / 10 ** 18);
+}
+
+static async swap(account, amount) {
+    amount = new BigNumber(amount * 10 ** 18);  
+    SC.tokenSwap.methods.deposit(amount.toFixed())
+    .send({from: account})
+        .then(function(result){
+            console.log(result)
+    });
+}
+
+static async Rate() {
+    let count = await SC.tokenSwap.methods.getTokenProportion().call();
+    let result = bigInt(10000000000) / bigInt(count);
+    return Math.trunc(result);
+}
+
+static async available(account) {
+    let card = await SC.tokenSwap.methods.getUserCardAmount(account).call();
+    let get = Number();
+         for(let i = 0; i < parseInt(card); i++) {
+            await SC.tokenSwap.methods.calculateReward(account, i).call().then(function (result) {
+                get = get + parseInt(result)
             }).catch(function (err) {
             });
          }

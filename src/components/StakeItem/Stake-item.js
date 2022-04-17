@@ -192,6 +192,7 @@ export const StakeItem = ({
     provider
 }, ref) => {
     let [ APR, setAPR ] = useState(0);
+    let [ Rate, setRate ] = useState(0);
     let [ initialized, setInitialized ] = useState(false);
     let [ approved, setApproved ] = useState(false);
     let [ earned, setEarned ] = useState('-');
@@ -199,6 +200,7 @@ export const StakeItem = ({
     let [ canHarvest, setCanHarvest ] = useState(false);
     let [ canWithdraw, setCanWithdraw ] = useState(false);
     let [ unlockedReward, setUnlockedReward ] = useState(0);
+    let [ available, setAvailable ] = useState(0);
 
     const { t } = useTranslation();
 
@@ -226,7 +228,7 @@ export const StakeItem = ({
         }
     }, [ version, account ]);
     const updateData = useCallback(async () => {
-      let inStakeRaw, earnedRaw, holdingTimeRaw, stackedTimeRaw,unlockReward,inStakeRawV2;
+      let inStakeRaw, earnedRaw, holdingTimeRaw, stackedTimeRaw,unlockReward,inStakeRawV2,availabReward;
       if (version === "1") {
           inStakeRaw = await SC.getInStake(account);
           earnedRaw = await SC.getEarned(account);
@@ -241,6 +243,9 @@ export const StakeItem = ({
            setInStake(inStakeRawV2);
            setEarned(earnedRaw.toFixed(2));
            setUnlockedReward(unlockReward);
+      } else if (version === "3") {
+           availabReward = await SC.available(account);
+           setAvailable(availabReward);
       }
         if(version === "1") {
           setCanHarvest(true);
@@ -260,9 +265,6 @@ export const StakeItem = ({
         } else if (version === "2") {
             approval = await SC.approveV2();
         }
-        else if(version == "3") {
-            alert('Approved')
-        }
 
         setApproved(approval);
 
@@ -276,6 +278,8 @@ export const StakeItem = ({
                     if (await SC.allowance(account)) return setApproved(true);
                 } else if (version === "2") {
                     if (await SC.allowanceV2(account)) return setApproved(true);
+                } else if(version === "3") {
+                    return setApproved(true);
                 }
             }
         
@@ -284,6 +288,8 @@ export const StakeItem = ({
                     setAPR(await SC.APR());
                 } else if (version === "2") {
                     setAPR(await SC.APRV2());
+                } else if(version == "3") {
+                    setRate(await SC.Rate());
                 }
                 setInitialized(true);
                  setInterval(() => {
@@ -436,7 +442,7 @@ export const StakeItem = ({
    </span>
   </StyledStakeItemHelp>
 </StyledAPR>
-<p style={{'color': '#c2abcb'}}>1 OSHI = 1000 METO</p>
+<p style={{'color': '#c2abcb'}}>{Rate? `${'1 OSHI = '+Rate+' METO'}` : '-' }</p>
 </StyledStakeItemRow> : version == "4" ? <StyledStakeItemRow>
  <StyledAPR>
    <span> {t("STAKE.APR")}</span>
@@ -455,9 +461,7 @@ export const StakeItem = ({
   {version == "3" ? <StyledStakeItemRowWithButton>
      <div>
         <StyledStakeItemTextWithButton style={{'margin-top': '25px'}}>
-           <span>
-               Available OSHI <br />1000
-          </span>
+           <span> Available OSHI <br />{available}</span>
         </StyledStakeItemTextWithButton>
          <StyledStakeItemTextWithButton style={{'margin-top': '30px'}}>
            <span>Remaining OSHI <br />5000</span> 
@@ -496,7 +500,7 @@ export const StakeItem = ({
    
    {version == "3" ? <div>
     <StyledStakeItemRowWithButton>
-          <StyledStakeItemButton  onClick={ handleStake} activeButton={false } style={{ width: '100%' }}>
+          <StyledStakeItemButton  onClick={ handleStake} activeButton={needToApprove} style={{ width: '100%' }}>
               Swap METO to OSHI
           </StyledStakeItemButton>
    </StyledStakeItemRowWithButton>
