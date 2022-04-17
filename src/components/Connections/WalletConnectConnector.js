@@ -4,7 +4,7 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 
 export const walletConnect = new WalletConnectConnector({
     supportedChainIds: [ 1, 56 ],
-    infuraId: "766bb0788f3a4ee29d9504e4ae4ce4b3",
+    infuraId: "2a30f84fac220e83cd70e056029de89b",
     rpc: {
         56: "https://rpc.ankr.com/bsc"
     },
@@ -20,7 +20,7 @@ export const walletConnect = new WalletConnectConnector({
 
 export const walletConnectProvider = new WalletConnectProvider({
     supportedChainIds: [ 1, 56 ],
-    infuraId: "766bb0788f3a4ee29d9504e4ae4ce4b3",
+    infuraId: "2a30f84fac220e83cd70e056029de89b",
     rpc: {
         56: "https://rpc.ankr.com/bsc"
     },
@@ -33,7 +33,6 @@ export const walletConnectProvider = new WalletConnectProvider({
     chainId: 56,
     pollingInterval: 15000
 });
-
-// (async () => {
-//     await walletConnectProvider.enable();
-// })();
+//  (async () => {
+//      await walletConnectProvider.enable();
+//  })();

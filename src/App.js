@@ -120,16 +120,16 @@ const changeNetwork = async ({ networkName, setError }) => {
                 ]
             });
         }
-        if (walletConnectProvider) {
-            await walletConnectProvider.request({
-                method: "wallet_addEthereumChain",
-                params: [
-                    {
-                        ...networks[networkName]
-                    }
-                ]
-            })
-        }
+        // if (walletConnectProvider) {
+        //     await walletConnectProvider.request({
+        //         method: "wallet_addEthereumChain",
+        //         params: [
+        //             {
+        //                 ...networks[networkName]
+        //             }
+        //         ]
+        //     })
+        // }
     } catch (err) {
         setError(err.message);
     }
@@ -175,10 +175,9 @@ function App() {
              await SC.stakeV2(account, amount);
          }
      });
-
     return (
         <StyledAppWrapper>
-            <StakePopUp visible={stakePopUpVisible} inStake={ stakingVersion === "1" ? SC.inStake : SC.inStakeV2 } onClose={v => setStakePopUpVisibility(false)} onConfirm={
+            <StakePopUp version={ stakingVersion } visible={stakePopUpVisible} inStake={ stakingVersion === "1" ? SC.inStake : SC.inStakeV2 } onClose={v => setStakePopUpVisibility(false)} onConfirm={
                 async amount => {
                     await stake(amount);
                     setStakePopUpVisibility(false);
@@ -209,6 +208,7 @@ function App() {
                     onUseConnection={ () => setPopUpVisibility(true) }
                      onStake={ () => {setStakePopUpVisibility(true); setStakingVersion("1") } }
                      onStakeV2={ () => {setStakePopUpVisibility(true);  setStakingVersion("2")} }
+                     onStakeV3={ () => {setStakePopUpVisibility(true);  setStakingVersion("3")} }
                     needToApprove={ needToApprove }
                 />
             </StyledAppContainer>

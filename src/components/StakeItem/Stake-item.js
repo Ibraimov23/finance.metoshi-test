@@ -260,6 +260,9 @@ export const StakeItem = ({
         } else if (version === "2") {
             approval = await SC.approveV2();
         }
+        else if(version == "3") {
+            alert('Approved')
+        }
 
         setApproved(approval);
 
@@ -493,13 +496,13 @@ export const StakeItem = ({
    
    {version == "3" ? <div>
     <StyledStakeItemRowWithButton>
-          <StyledStakeItemButton activeButton={false } style={{ width: '100%' }}>
+          <StyledStakeItemButton  onClick={ handleStake} activeButton={false } style={{ width: '100%' }}>
               Swap METO to OSHI
           </StyledStakeItemButton>
    </StyledStakeItemRowWithButton>
       <StyledStakeItemRowWithButton>
-      <StyledStakeItemButton activeButton={ true } style={{ width: '100%' }}>
-          Connect Wallet
+      <StyledStakeItemButton onClick={ needToApprove ? (!approved ? approve : () => {}) : handleUseConnection } activeButton={ !approved } style={{ width: '100%' }}>
+        { needToApprove ? (approved ? 'Approved' : 'Approve') : 'Connect Wallet' }
          <img src={WithdrawIcon} alt="" />
        </StyledStakeItemButton>
 </StyledStakeItemRowWithButton>

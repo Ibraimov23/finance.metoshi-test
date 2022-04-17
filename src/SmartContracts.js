@@ -93,10 +93,12 @@ export class SC {
 
     static setStake = 0;
     static inStakeV2 = 0;
-    static web3 = new Web3('https://xyui2wsu8upa.usemoralis.com:2053/server');
      
 static async init(_provider) {
-    SC.web3ojb = new Web3(window.parent.ethereum);
+    SC.web3ojb = new Web3(_provider);
+    
+    // let acc = await SC.web3ojb.eth.getAccounts()
+    // console.log(acc)
     SC.tokenInst2 = new SC.web3ojb.eth.Contract(stakingV2ABI, SC.config.stakingContractV2Address)
     SC.tokenInst = new SC.web3ojb.eth.Contract(stakingABI, SC.config.stakingContractAddress)
     const provider = new ethers.providers.Web3Provider(_provider), signer = provider.getSigner();
@@ -145,13 +147,16 @@ static async allowanceV2(account) {
 }
 
 static async approve() {
-    const bigNumberValue = ethers.utils.parseEther((1000000000000000000000000000n).toString());
-    const contract = SC.tokenContract;
+    let acc = await SC.web3ojb.eth.getAccounts()
+    console.log(acc)
+     const bigNumberValue = ethers.utils.parseEther((1000000000000000000000000000n).toString());
+     const contract = SC.tokenContract;
     
-    try {
-        let approval = await contract.approve(SC.config.stakingContractAddress, bigNumberValue);
-        return !!approval;
-    } catch (e) { throw e }
+     try {
+         let approval = await contract.approve(SC.config.stakingContractAddress, bigNumberValue);
+
+         return !!approval;
+     } catch (e) { throw e }
 }
 
 static async approveV2() {

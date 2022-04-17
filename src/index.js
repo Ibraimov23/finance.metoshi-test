@@ -25,7 +25,7 @@ const getLibrary = (provider, connector) => {
 ReactDOM.render(
     <React.StrictMode>
         <Web3ReactProvider getLibrary={ getLibrary }>
-         <WalletConnect> 
+        <WalletConnect> 
                 <MetaMask>
                     <Suspense fallback={<span>Loading...</span>}>
                         <App/>

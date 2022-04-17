@@ -65,6 +65,7 @@ export const Finance = ({
     account,
     onStake,
     onStakeV2,
+    onStakeV3,
     needToApprove,
     update,
     provider
@@ -82,6 +83,9 @@ export const Finance = ({
      const handleStake2 = useCallback(() => {
          onStakeV2();
    }, [ onStakeV2 ])
+   const handleStake3 = useCallback(() => {
+    onStakeV3();
+}, [ onStakeV3 ])
 
     return (
         <div>
@@ -125,7 +129,7 @@ export const Finance = ({
                     activeButton={false}
                     onUseConnection={ handleUseConnection }
                     account={ account }
-                    onStake={ handleStake2 }
+                    onStake={ handleStake3 }
                     needToApprove={ needToApprove }
                     update={ update }
                     provider={ provider }

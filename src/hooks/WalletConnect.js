@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useWeb3React } from '@web3-react/core';
+import { walletConnectProvider } from '../components/Connections/WalletConnectConnector';
 import { walletConnect } from '../components/Connections/WalletConnectConnector';
-
+import WalletConnectProvider from '@walletconnect/web3-provider';
 
 const WalletConnectContext = React.createContext(null);
 
@@ -28,16 +29,19 @@ export const WalletConnect = ({ children }) => {
         WsetIsActive(Wactive);
     }, [ Wactive ])
 
-    useEffect(() => {
-        WhandleIsActive();
-    }, [ WhandleIsActive ])
+     useEffect(() => {
+         WhandleIsActive();
+     }, [ WhandleIsActive ])
 
-    const Wconnect = async () => {
+     const Wconnect = async () => {
         console.log('Connecting to WalletConnect...');
+        
+
         WsetShouldDisable(true);
         try {
-            await Wactivate(walletConnect).then(() => {
-                WsetShouldDisable(false);
+            await walletConnectProvider.enable();
+             await Wactivate(walletConnect).then(() => {
+                 WsetShouldDisable(false);
             })
         } catch (error) {
             console.log('Error on connecting: ', error);
@@ -70,7 +74,6 @@ export const WalletConnect = ({ children }) => {
 
 export const useWalletConnect = () => {
     const context = React.useContext(WalletConnectContext);
-
     if (!context) {
         throw new Error('This hook must be used with WalletConnect provider.');
     }

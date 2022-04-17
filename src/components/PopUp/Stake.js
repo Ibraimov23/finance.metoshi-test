@@ -110,7 +110,7 @@ const StyledStakeItemButton = styled.a`
 `;
 
 
-export const StakePopUp = ({ visible, onClose, onConfirm, inStake }) => {
+export const StakePopUp = ({version, visible, onClose, onConfirm, inStake }) => {
     let [ amount, setAmount ] = useState(0);
 
     const handleClose = useCallback(() => {
@@ -125,7 +125,7 @@ export const StakePopUp = ({ visible, onClose, onConfirm, inStake }) => {
         setAmount(+event.target.value);
     }
 
-    return <PopUp label="Stake METO" visible={visible} onClose={ handleClose }>
+    return version == "1" || version == "2" ? <PopUp label="Stake METO" visible={visible} onClose={ handleClose }>
         <StyledStakeAmount>
             <input type="text" value={ amount } onChange={ handleInputChange }/>
             <div className="currency">
@@ -146,4 +146,25 @@ export const StakePopUp = ({ visible, onClose, onConfirm, inStake }) => {
             </StyledStakeItemButton>
         </StyledStakeButtonsRow>
     </PopUp>
+    : version == "3" ? <PopUp label="Swap" visible={visible} onClose={ handleClose }>
+        <StyledStakeAmount>
+            <input type="text" value={ amount } onChange={ handleInputChange }/>
+            <div className="currency">
+                { inStake || '-' } METO
+                <img src={WalletIcon} alt="Wallet"/>
+            </div>
+        </StyledStakeAmount>
+        <StyledStakeButtonsRow>
+            <StyledStakeItemButton onClick={ handleClose }>
+                <span>
+                    Cancel
+                </span>
+            </StyledStakeItemButton>
+            <StyledStakeItemButton onClick={ () => { handleConfirm() } } activeButton={ true }>
+                <span>
+                    Confirm
+                </span>
+            </StyledStakeItemButton>
+        </StyledStakeButtonsRow>
+    </PopUp> : null
 }
