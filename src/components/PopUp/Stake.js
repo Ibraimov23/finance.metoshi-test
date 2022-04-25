@@ -134,7 +134,7 @@ export const StakePopUp = ({version, visible, onClose, onConfirm, onSwapConfirm,
             <input type="text" value={ amount } onChange={ handleInputChange }/>
             <div className="currency">
                 { inStake || '-' } METO
-                <img src={WalletIcon} alt="Wallet"/>
+                <img src={WalletIcon} alt="Wallet" />
             </div>
         </StyledStakeAmount>
         <StyledStakeButtonsRow>

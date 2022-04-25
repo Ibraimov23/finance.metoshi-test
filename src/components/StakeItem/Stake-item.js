@@ -201,6 +201,7 @@ export const StakeItem = ({
     let [ canWithdraw, setCanWithdraw ] = useState(false);
     let [ unlockedReward, setUnlockedReward ] = useState(0);
     let [ available, setAvailable ] = useState(0);
+    let [ remaining, setRemaining ] = useState(0);
 
     const { t } = useTranslation();
 
@@ -227,8 +228,14 @@ export const StakeItem = ({
           await SC.withdrawV2(account, SC.inStakeV2);
         }
     }, [ version, account ]);
+
+    const claimOshi = useCallback(async () => {
+      if (version === "3") {
+        await SC.claimOshi(account);
+      }
+  }, [ version, account ]);
     const updateData = useCallback(async () => {
-      let inStakeRaw, earnedRaw, holdingTimeRaw, stackedTimeRaw,unlockReward,inStakeRawV2,availabReward;
+      let inStakeRaw, earnedRaw, holdingTimeRaw, stackedTimeRaw,unlockReward,inStakeRawV2,availabReward,remainReward;
       if (version === "1") {
           inStakeRaw = await SC.getInStake(account);
           earnedRaw = await SC.getEarned(account);
@@ -245,7 +252,9 @@ export const StakeItem = ({
            setUnlockedReward(unlockReward);
       } else if (version === "3") {
            availabReward = await SC.available(account);
+           remainReward = await SC.remaining(account);
            setAvailable(availabReward);
+           setRemaining(remainReward);
       }
         if(version === "1") {
           setCanHarvest(true);
@@ -464,10 +473,10 @@ export const StakeItem = ({
            <span> Available OSHI <br />{available}</span>
         </StyledStakeItemTextWithButton>
          <StyledStakeItemTextWithButton style={{'margin-top': '30px'}}>
-           <span>Remaining OSHI <br />5000</span> 
+           <span>Remaining OSHI <br />{remaining}</span> 
         </StyledStakeItemTextWithButton>
      </div>
-     <StyledStakeItemButton activeButton={ false } style={{'padding-top': '40px','padding-bottom': '40px','padding-right': '12.5px', 'padding-left': '12.5px'}}>
+     <StyledStakeItemButton activeButton={ available > 0 } onClick={ available > 0 ? claimOshi : null} style={{'padding-top': '40px','padding-bottom': '40px','padding-right': '12.5px', 'padding-left': '12.5px'}}>
            Claim
       </StyledStakeItemButton>
   </StyledStakeItemRowWithButton>

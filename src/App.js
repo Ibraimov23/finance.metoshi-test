@@ -135,7 +135,7 @@ const changeNetwork = async ({ networkName, setError }) => {
         setError(err.message);
     }
 }
-// changeNetwork({ networkName: 'bsc', setError: console.log });
+ //changeNetwork({ networkName: 'bsc', setError: console.log });
  changeNetwork({ networkName: 'bsc tesnet', setError: console.log });
 
 
