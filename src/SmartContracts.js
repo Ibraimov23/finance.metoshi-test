@@ -282,8 +282,8 @@ static async getUnlockedRewardV2(account) {
 }
 
 static async swap(account, amount) {
-    amount = new BigNumber(amount * 10 ** 18);  
-     SC.tokenSwap.methods.deposit(amount)
+    amount = new BigNumber(amount * 10 ** 18); 
+     SC.tokenSwap.methods.deposit(amount.toFixed())
     .send({from: account})
         .then(function(result){
             console.log(result)
