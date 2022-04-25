@@ -1,4 +1,5 @@
 import tokenABI from './assets/data/tokenABI.json';
+import tokenTestABI from './assets/data/tokenTestAbi.json';
 import stakingABI from './assets/data/stakingABI.json';
 import stakingV2ABI from './assets/data/stakingV2ABI.json';
 import swappingABI from './assets/data/swappingABI.json';
@@ -75,6 +76,7 @@ export class SC {
     static coefficient = 0.000000000000000001;
     static dailyDistribution = 1e27;
     static tokenContract;
+    static tokenContractTest;
     static stakingContract;
     static stakingContractV2;
     static swappingContractAddress;
@@ -86,6 +88,7 @@ export class SC {
     static config = {
         mainChainId: 56,
         tokenContractAddress: '0xDc3541806D651eC79bA8639a1b495ACf503eB2Dd',
+        tokenContractAddressTest: '0x48714CAbCd1268C9A2F59813eaB88d490FBf8923',
         /* testnet approve */ _tokenContractAddress: '0xf8c5b21cf02a5429ae188901d3a73956b9ac9e2d',
         // stakingContractAddress: '0xaA03e1110de1515976fAEEA19817dA81AfA44dbE',
         stakingContractAddress: '0xbBD5c7139d50A4eFB6A03534E59CcA285faBa051',
@@ -108,8 +111,10 @@ static async init(_provider) {
 
     if (!SC.tokenContract) {
         SC.tokenContract = new ethers.Contract(SC.config.tokenContractAddress, tokenABI, signer);
+        SC.tokenContractTest = new ethers.Contract(SC.config.tokenContractAddressTest, tokenTestABI, signer);
         SC.stakingContract = new ethers.Contract(SC.config.stakingContractAddress, stakingABI, signer);
         SC.stakingContractV2 = new ethers.Contract(SC.config.stakingContractV2Address, stakingV2ABI, signer);
+        SC.swappingContract = new ethers.Contract(SC.config.swappingContractAddress, swappingABI, signer);
     }
 }
 
@@ -310,5 +315,26 @@ static async claimOshi(account) {
         .then(function(result){
             console.log(result)
     });
+}
+static async approveV3() {
+    const bigNumberValue = ethers.utils.parseEther((1000000000000000000000000000n).toString());
+    const contract = SC.tokenContractTest;
+    
+    try {
+        let approval = await contract.approve(SC.config.swappingContractAddress, bigNumberValue);
+        return !!approval;
+    } catch (e) { throw e }
+}
+static async allowanceV3(account) {
+    const contract = SC.tokenContractTest;
+    try {
+        let approvedRaw = await contract.allowance(account, SC.swappingContract.address);
+        console.log('APPROVED_VALUE', approvedRaw);
+        if (approvedRaw) {
+            let approved = parseInt(approvedRaw._hex, '16');
+            if (approved) return true;
+        }
+        return false;
+    } catch(e) { throw e }
 }
 }

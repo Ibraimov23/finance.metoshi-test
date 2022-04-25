@@ -273,8 +273,9 @@ export const StakeItem = ({
             approval = await SC.approve();
         } else if (version === "2") {
             approval = await SC.approveV2();
+        } else if (version === "3") {
+            approval = await SC.approveV3();
         }
-
         setApproved(approval);
 
         updateData();
@@ -288,7 +289,7 @@ export const StakeItem = ({
                 } else if (version === "2") {
                     if (await SC.allowanceV2(account)) return setApproved(true);
                 } else if(version === "3") {
-                    return setApproved(true);
+                    if (await SC.allowanceV3(account)) return setApproved(true);
                 }
             }
         
@@ -509,7 +510,7 @@ export const StakeItem = ({
    
    {version == "3" ? <div>
     <StyledStakeItemRowWithButton>
-          <StyledStakeItemButton  onClick={ handleStake} activeButton={needToApprove} style={{ width: '100%' }}>
+          <StyledStakeItemButton  onClick={approved ? handleStake : () => {}} activeButton={approved} style={{ width: '100%' }}>
               Swap METO to OSHI
           </StyledStakeItemButton>
    </StyledStakeItemRowWithButton>
