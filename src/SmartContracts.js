@@ -302,9 +302,10 @@ static async Rate() {
 }
 
 static async available(account) {
-     let count = await SC.tokenSwap.methods.checkReward(account,1).call();
-     let result = parseInt(count / 10 ** 17).toString();
-     return result > 0 ? result.substring(0, result.length - 1) + '.' + result.substring(result.length - 1, result.length) : result;
+    let card = await SC.tokenSwap.methods.getUserCardAmount(account).call();
+    let count = await SC.tokenSwap.methods.checkReward(account,card).call();
+    let result = parseInt(count / 10 ** 17).toString();
+    return result > 0 ? result.substring(0, result.length - 1) + '.' + result.substring(result.length - 1, result.length) : result;
 }
 static async remaining(account) {
     let card = await SC.tokenSwap.methods.getUserCardAmount(account).call();
