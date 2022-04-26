@@ -93,7 +93,7 @@ export class SC {
         // stakingContractAddress: '0xaA03e1110de1515976fAEEA19817dA81AfA44dbE',
         stakingContractAddress: '0xbBD5c7139d50A4eFB6A03534E59CcA285faBa051',
         stakingContractV2Address: '0x6CCF448bAE762431B2Bae046b85fD730313Cbef3',
-        swappingContractAddress: '0x3c6020360EA414a2f7F6a26E0FDA2bfAabdd5626',
+        swappingContractAddress: '0x602B9e86d5D18F5297f94c9a69B28bCe476c2c1E',
         mainWallet: '0x8B4754ae99F1e595481029c6835C6931442f5f02',
         timestamp: 1648163253
     };
@@ -302,8 +302,9 @@ static async Rate() {
 }
 
 static async available(account) {
-     let count = await SC.tokenSwap.methods.calculateReward(account,1).call();
-     return parseInt(count / 10 ** 28);
+     let count = await SC.tokenSwap.methods.checkReward(account,1).call();
+     let result = parseInt(count / 10 ** 17).toString();
+     return result.substring(0, result.length - 1) + '.' + result.substring(result.length - 1, result.length);
 }
 static async remaining(account) {
     let card = await SC.tokenSwap.methods.getUserCardAmount(account).call();
