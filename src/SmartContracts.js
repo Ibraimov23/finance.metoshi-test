@@ -98,8 +98,9 @@ export class SC {
         timestamp: 1648163253
     };
 
-    static setStake = 0;
+    static inStake = 0;
     static inStakeV2 = 0;
+    static inStakeV3 = 0;
      
 static async init(_provider) {
     SC.web3ojb = new Web3(_provider);
@@ -341,5 +342,10 @@ static async allowanceV3(account) {
         }
         return false;
     } catch(e) { throw e }
+}
+static async getInStakeV3(account) {
+    const balance = bigInt(await SC.tokenInstMeto.methods.balanceOf(account).call());
+    SC.inStakeV3 = String(balance.value / 10n ** 18n);
+    return String(balance.value / 10n ** 18n);
 }
 }

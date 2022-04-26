@@ -12,6 +12,7 @@ import { useWalletConnect } from "./hooks/WalletConnect";
 import { StakePopUp } from "./components/PopUp/Stake";
 import { SC } from './SmartContracts';
 import { walletConnectProvider } from "./components/Connections/WalletConnectConnector";
+import { version } from "process";
 
 
 const StyledAppWrapper = styled.div`
@@ -181,7 +182,7 @@ function App() {
     });
     return (
         <StyledAppWrapper>
-            <StakePopUp version={ stakingVersion } visible={stakePopUpVisible} inStake={ stakingVersion === "1" ? SC.inStake : SC.inStakeV2 } onClose={v => setStakePopUpVisibility(false)} onConfirm={
+            <StakePopUp version={ stakingVersion } visible={stakePopUpVisible} inStake={ stakingVersion === "1" ? SC.inStake : stakingVersion == "2" ? SC.inStakeV2 : stakingVersion == "3" ? SC.inStakeV3 :  null} onClose={v => setStakePopUpVisibility(false)} onConfirm={
                 async amount => {
                     await stake(amount);
                     setStakePopUpVisibility(false);

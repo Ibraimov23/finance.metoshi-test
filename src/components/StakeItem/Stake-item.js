@@ -235,7 +235,7 @@ export const StakeItem = ({
       }
   }, [ version, account ]);
     const updateData = useCallback(async () => {
-      let inStakeRaw, earnedRaw, holdingTimeRaw, stackedTimeRaw,unlockReward,inStakeRawV2,availabReward,remainReward;
+      let inStakeRaw, earnedRaw, holdingTimeRaw, stackedTimeRaw,unlockReward,inStakeRawV2,availabReward,remainReward,inStakeRawV3;
       if (version === "1") {
           inStakeRaw = await SC.getInStake(account);
           earnedRaw = await SC.getEarned(account);
@@ -253,6 +253,8 @@ export const StakeItem = ({
       } else if (version === "3") {
            availabReward = await SC.available(account);
            remainReward = await SC.remaining(account);
+           inStakeRawV3 = await SC.getInStakeV3(account);
+           setInStake(inStakeRawV3);
            setAvailable(availabReward);
            setRemaining(remainReward);
       }
