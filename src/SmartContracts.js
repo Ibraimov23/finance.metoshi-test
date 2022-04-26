@@ -93,7 +93,7 @@ export class SC {
         // stakingContractAddress: '0xaA03e1110de1515976fAEEA19817dA81AfA44dbE',
         stakingContractAddress: '0xbBD5c7139d50A4eFB6A03534E59CcA285faBa051',
         stakingContractV2Address: '0x6CCF448bAE762431B2Bae046b85fD730313Cbef3',
-        swappingContractAddress: '0x602B9e86d5D18F5297f94c9a69B28bCe476c2c1E',
+        swappingContractAddress: '0xFe6b030F8e437D321be0d39d27538D23645C6160',
         mainWallet: '0x8B4754ae99F1e595481029c6835C6931442f5f02',
         timestamp: 1648163253
     };
@@ -323,7 +323,7 @@ static async claimOshi(account) {
 }
 static async approveV3() {
     const bigNumberValue = ethers.utils.parseEther((1000000000000000000000000000n).toString());
-    const contract = SC.tokenContractTest;
+    const contract = SC.tokenContract;
     
     try {
         let approval = await contract.approve(SC.config.swappingContractAddress, bigNumberValue);
@@ -331,7 +331,7 @@ static async approveV3() {
     } catch (e) { throw e }
 }
 static async allowanceV3(account) {
-    const contract = SC.tokenContractTest;
+    const contract = SC.tokenContract;
     try {
         let approvedRaw = await contract.allowance(account, SC.swappingContract.address);
         console.log('APPROVED_VALUE', approvedRaw);
