@@ -471,7 +471,7 @@ export const StakeItem = ({
   {version == "3" ? <StyledStakeItemRowWithButton>
      <div>
         <StyledStakeItemTextWithButton style={{'margin-top': '25px'}}>
-           <span> Available OSHI <br />-</span>
+           <span> Available OSHI <br />{available}</span>
         </StyledStakeItemTextWithButton>
          <StyledStakeItemTextWithButton style={{'margin-top': '30px'}}>
            <span>Remaining OSHI <br />{remaining}</span> 
