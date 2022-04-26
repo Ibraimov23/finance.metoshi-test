@@ -93,7 +93,7 @@ export class SC {
         // stakingContractAddress: '0xaA03e1110de1515976fAEEA19817dA81AfA44dbE',
         stakingContractAddress: '0xbBD5c7139d50A4eFB6A03534E59CcA285faBa051',
         stakingContractV2Address: '0x6CCF448bAE762431B2Bae046b85fD730313Cbef3',
-        swappingContractAddress: '0xC22481E6ADB19e2156a2be15587896738AAEBB33',
+        swappingContractAddress: '0x6043e18d34b989a7674cb3feB4F6f849dB4056FF',
         mainWallet: '0x8B4754ae99F1e595481029c6835C6931442f5f02',
         timestamp: 1648163253
     };
