@@ -302,15 +302,17 @@ static async Rate() {
 }
 
 static async available(account) {
-    let card = await SC.tokenSwap.methods.calculateReward(account,1).call();
-    return parseInt(card / 10 ** 28);
+    let count = await SC.tokenSwap.methods.calculateReward(account,1).call();
+    return parseInt(count / 10 ** 28);
 }
 static async remaining(account) {
-    let count = await SC.tokenSwap.methods.getInformation(account,1).call();
+    let card = await SC.tokenSwap.methods.getUserCardAmount(account).call();
+    let count = await SC.tokenSwap.methods.getInformation(account,card).call();
     return parseInt(count[1] / 10 ** 18);
 }
 static async claimOshi(account) {
-     SC.tokenSwap.methods.release(1)
+    let card = await SC.tokenSwap.methods.getUserCardAmount(account).call();
+     SC.tokenSwap.methods.release(parseInt(card))
     .send({from: account})
         .then(function(result){
             console.log(result)
