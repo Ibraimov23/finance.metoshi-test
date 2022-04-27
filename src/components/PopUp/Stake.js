@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { PopUp } from './PopUp';
 import WalletIcon from '../../assets/imgs/wallet.png';
+import { useTranslation } from "react-i18next";
 
 
 const StyledConnectButton = styled.div`
@@ -112,7 +113,8 @@ const StyledStakeItemButton = styled.a`
 
 export const StakePopUp = ({version, visible, onClose, onConfirm, onSwapConfirm, inStake }) => {
     let [ amount, setAmount ] = useState(0);
-
+    const { t } = useTranslation();
+    
     const handleClose = useCallback(() => {
         onClose(true);
     }, [ onClose ]);
@@ -161,12 +163,12 @@ export const StakePopUp = ({version, visible, onClose, onConfirm, onSwapConfirm,
         <StyledStakeButtonsRow>
             <StyledStakeItemButton onClick={ handleClose }>
                 <span>
-                    Cancel
+                   {t("SWAP.CANCEL")}
                 </span>
             </StyledStakeItemButton>
             <StyledStakeItemButton onClick={ () => { handleSwapConfirm() } } activeButton={ true }>
                 <span>
-                    Confirm
+                   {t("SWAP.CONFIRM")}
                 </span>
             </StyledStakeItemButton>
         </StyledStakeButtonsRow>

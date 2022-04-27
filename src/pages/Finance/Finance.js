@@ -8,6 +8,7 @@ const StyledHeader = styled.h1`
   font-style: normal;
   font-weight: 800;
   font-size: 96px;
+  font-family: 'GeoramaBold';
   line-height: 115px;
   letter-spacing: 0.02em;
   color: #fff;

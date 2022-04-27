@@ -117,7 +117,7 @@ const StyledStakeItemTextWithButton = styled.div`
     font-size: 20px;
     line-height: 140%;
     letter-spacing: 0.02em;
-    font-family: Georama
+    font-family: 'Segoe UI', sans-serif;
   }
   p {
     font-weight: 700;
@@ -330,7 +330,7 @@ export const StakeItem = ({
                 <span class="i">
                       <img src={HelpIcon} alt="" />
 			                <span class="tooltip">			
-                      Your deposit will be locked for 30 days. However, the rewards will always be available for withdrawal.
+                      {t("STAKE.HELPSTAKE1")}
 		          	</span>
               	</span>
                 </StyledStakeItemHelp>
@@ -342,7 +342,7 @@ export const StakeItem = ({
                 <span class="i">
                       <img src={HelpIcon} alt="" />
 			                <span class="tooltip">			
-                      Your deposit is always available for withdrawal. However, the rewards will start unlocking after 30 days.
+                      {t("STAKE.HELPSTAKE2")}
 		          	</span>
               	</span>
                 </StyledStakeItemHelp>
@@ -402,7 +402,7 @@ export const StakeItem = ({
       </StyledStakeItemRowWithButton>
       <StyledStakeItemRowWithButton>
           <StyledStakeItemButton onClick={ needToApprove ? (!approved ? approve : () => {}) : handleUseConnection } activeButton={ !approved } style={{ width: '100%' }}>
-              { needToApprove ? (approved ? 'Approved' : 'Approve') : 'Connect Wallet' }
+              { needToApprove ? (approved ? 'Approved' : 'Approve') : t("STAKE.CONNECT") }
               <img src={WithdrawIcon} alt="" />
           </StyledStakeItemButton>
       </StyledStakeItemRowWithButton>
@@ -416,15 +416,13 @@ export const StakeItem = ({
 <StyledStakeItemContainer>
 { version === "3" ? <StyledStakeItemHeader>
     <p>
-        Swap METO to OSHI
+       {t("SWAP.SWAPMETO")}
     </p>
     <StyledStakeItemHelp>
     <span class="i">
           <img src={HelpIcon} alt="" />
           <span class="tooltip">			
-          You can swap your METO to OSHI at the current rate.
-          For example: change 1000 METO to OSHI at the rate of 1000.
-          Therefore you will give 1000 METO and get 1 OSHI
+          {t("SWAP.HELPSWAP1")}
     </span>
     </span>
     </StyledStakeItemHelp>
@@ -436,7 +434,7 @@ export const StakeItem = ({
     <span class="i">
           <img src={HelpIcon} alt="" />
           <span class="tooltip">			
-          This service is under development, you will be able to use it very soon.
+          {t("STAKE.HELPSOON")}
     </span>
     </span>
     </StyledStakeItemHelp>
@@ -444,12 +442,12 @@ export const StakeItem = ({
 
 { version === "3" ? <StyledStakeItemRow>
 <StyledAPR>
-  <span>Rate</span>
+  <span>{t("SWAP.RATE")}</span>
   <StyledStakeItemHelp>
    <span class="i">
     <img src={HelpIcon} alt="" />
     <span class="tooltip">	
-        Rate displays how much METO costs 1 OSHI	
+        {t("SWAP.HELPSWAP2")}
     </span>
    </span>
   </StyledStakeItemHelp>
@@ -473,14 +471,14 @@ export const StakeItem = ({
   {version == "3" ? <StyledStakeItemRowWithButton>
      <div>
         <StyledStakeItemTextWithButton style={{'margin-top': '25px'}}>
-           <span> Available OSHI <br />{available}</span>
+           <span>{t("SWAP.AVAILABLE")} <br />{available}</span>
         </StyledStakeItemTextWithButton>
          <StyledStakeItemTextWithButton style={{'margin-top': '30px'}}>
-           <span>Remaining OSHI <br />{remaining}</span> 
+           <span>{t("SWAP.REMAINING")} <br />{remaining}</span> 
         </StyledStakeItemTextWithButton>
      </div>
      <StyledStakeItemButton activeButton={ available > 0 } onClick={ available > 0 ? claimOshi : null} style={{'padding-top': '40px','padding-bottom': '40px','padding-right': '12.5px', 'padding-left': '12.5px'}}>
-           Claim
+        {t("SWAP.CLAIM")}
       </StyledStakeItemButton>
   </StyledStakeItemRowWithButton>
   : version == "4" ?
@@ -512,13 +510,13 @@ export const StakeItem = ({
    
    {version == "3" ? <div>
     <StyledStakeItemRowWithButton>
-          <StyledStakeItemButton  onClick={approved ? handleStake : () => {}} activeButton={approved} style={{ width: '100%' }}>
-              Swap METO to OSHI
+          <StyledStakeItemButton  onClick={handleStake} activeButton={approved} style={{ width: '100%' }}>
+          {t("SWAP.SWAPMETO")}
           </StyledStakeItemButton>
    </StyledStakeItemRowWithButton>
       <StyledStakeItemRowWithButton>
       <StyledStakeItemButton onClick={ needToApprove ? (!approved ? approve : () => {}) : handleUseConnection } activeButton={ !approved } style={{ width: '100%' }}>
-        { needToApprove ? (approved ? 'Approved' : 'Approve') : 'Connect Wallet' }
+        { needToApprove ? (approved ? t("SWAP.APPROVED") : t("SWAP.APPROVE") ) : t("SWAP.CONNECT") }
          <img src={WithdrawIcon} alt="" />
        </StyledStakeItemButton>
 </StyledStakeItemRowWithButton>
@@ -528,7 +526,7 @@ export const StakeItem = ({
 }
 </div> : version == "4" ? <StyledStakeItemRowWithButton>
       <StyledStakeItemButton activeButton={true } className="sleep">
-         Soon
+      {t("STAKE.SOON")}
          <img src={SleepIcon} alt="" width="18" height="18"/>
        </StyledStakeItemButton>
 </StyledStakeItemRowWithButton> : null}
