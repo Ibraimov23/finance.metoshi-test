@@ -202,6 +202,8 @@ export const StakeItem = ({
     let [ unlockedReward, setUnlockedReward ] = useState(0);
     let [ available, setAvailable ] = useState(0);
     let [ remaining, setRemaining ] = useState(0);
+    let [ availableNft, setAvailableNft ] = useState(0);
+    let [ remainingNft, setRemainingNft ] = useState(0);
 
     const { t } = useTranslation();
 
@@ -234,8 +236,13 @@ export const StakeItem = ({
         await SC.claimOshi(account);
       }
   }, [ version, account ]);
+  const claimOshiNft = useCallback(async () => {
+    if (version === "4") {
+      await SC.claimOshiNft(account);
+    }
+}, [ version, account ]);
     const updateData = useCallback(async () => {
-      let inStakeRaw, earnedRaw, holdingTimeRaw, stackedTimeRaw,unlockReward,inStakeRawV2,availabReward,remainReward,inStakeRawV3;
+      let inStakeRaw, earnedRaw, holdingTimeRaw, stackedTimeRaw,unlockReward,inStakeRawV2,availabReward,remainReward,inStakeRawV3,availabNftReward,remainNftReward;
       if (version === "1") {
           inStakeRaw = await SC.getInStake(account);
           earnedRaw = await SC.getEarned(account);
@@ -257,7 +264,14 @@ export const StakeItem = ({
            setInStake(inStakeRawV3);
            setAvailable(availabReward);
            setRemaining(remainReward);
-      }
+      } else if (version === "4") {
+        availabNftReward = await SC.availableNft(account);
+        remainNftReward = await SC.remainingNft(account);
+        inStakeRawV3 = await SC.getInStakeV3(account);
+        setInStake(inStakeRawV3);
+        setAvailableNft(availabNftReward);
+        setRemainingNft(remainNftReward);
+       }
         if(version === "1") {
           setCanHarvest(true);
           setCanWithdraw(!(parseInt(inStakeRaw) <= 0) && !(holdingTimeRaw >= (Math.floor(Date.now() / 1000) - stackedTimeRaw)));
@@ -277,6 +291,8 @@ export const StakeItem = ({
             approval = await SC.approveV2();
         } else if (version === "3") {
             approval = await SC.approveV3();
+        } else if (version === "4") {
+            approval = await SC.approveV4();
         }
         setApproved(approval);
 
@@ -293,7 +309,10 @@ export const StakeItem = ({
                 } else if(version === "3") {
                     if (await SC.allowanceV3(account)) return setApproved(true);
                 }
-            }
+                 else if(version === "4") {
+                    if (await SC.allowanceV4(account)) return setApproved(true);
+                }
+              }
         
               if (!initialized && approved) {
                 if (version === "1") {
@@ -302,6 +321,9 @@ export const StakeItem = ({
                     setAPR(await SC.APRV2());
                 } else if(version == "3") {
                     setRate(await SC.Rate());
+                }
+                 else if(version == "4") {
+                setRate(await SC.RateNft());
                 }
                 setInitialized(true);
                  setInterval(() => {
@@ -395,11 +417,17 @@ export const StakeItem = ({
               <img src={WithdrawIcon} alt="" />
           </StyledStakeItemButton>
       </StyledStakeItemRowWithButton>
-      <StyledStakeItemRowWithButton>
+      {version == "1" ? <StyledStakeItemRowWithButton>
           <StyledStakeItemButton onClick={ approved ? handleStake : () => {} } activeButton={ approved } style={{ width: '100%' }}>
               Stake
           </StyledStakeItemButton>
-      </StyledStakeItemRowWithButton>
+      </StyledStakeItemRowWithButton> : version == "2" ?
+      <StyledStakeItemRowWithButton>
+           <StyledStakeItemButton activeButton={false} style={{ width: '100%' }}>
+              Stake
+         </StyledStakeItemButton>
+</StyledStakeItemRowWithButton>
+      :null}
       <StyledStakeItemRowWithButton>
           <StyledStakeItemButton onClick={ needToApprove ? (!approved ? approve : () => {}) : handleUseConnection } activeButton={ !approved } style={{ width: '100%' }}>
               { needToApprove ? (approved ? 'Approved' : 'Approve') : t("STAKE.CONNECT") }
@@ -428,7 +456,7 @@ export const StakeItem = ({
     </StyledStakeItemHelp>
 </StyledStakeItemHeader> : version == "4" ? <StyledStakeItemHeader>
     <p>
-        Stake METO - Earn NFT
+        Swap NFT to OSHI
     </p>
     <StyledStakeItemHelp>
     <span class="i">
@@ -454,18 +482,18 @@ export const StakeItem = ({
 </StyledAPR>
 <p style={{'color': '#c2abcb'}}>{Rate? `${'1 OSHI = '+Rate+' METO'}` : '-' }</p>
 </StyledStakeItemRow> : version == "4" ? <StyledStakeItemRow>
- <StyledAPR>
-   <span> {t("STAKE.APR")}</span>
-   <StyledStakeItemHelp>
-       <span class="i">
-           <img src={HelpIcon} alt="" />
-               <span class="tooltip">			
-                
-               </span>
-       </span>
-   </StyledStakeItemHelp>
+<StyledAPR>
+  <span>{t("SWAP.RATE")}</span>
+  <StyledStakeItemHelp>
+   <span class="i">
+    <img src={HelpIcon} alt="" />
+    <span class="tooltip">	
+        {t("SWAP.HELPSWAP2")}
+    </span>
+   </span>
+  </StyledStakeItemHelp>
 </StyledAPR>
-  <p> {'-' }</p>
+<p style={{'color': '#c2abcb'}}>{Rate? `${'1 NFT = '+Rate+' OSHI'}` : '-' }</p>
 </StyledStakeItemRow>
 : null}
   {version == "3" ? <StyledStakeItemRowWithButton>
@@ -482,31 +510,19 @@ export const StakeItem = ({
       </StyledStakeItemButton>
   </StyledStakeItemRowWithButton>
   : version == "4" ?
-  <div>
   <StyledStakeItemRowWithButton>
-  <StyledStakeItemTextWithButton>
-      <span>
-          {earnedText} {t("STAKE.EARNED")}
-      </span>
-      <p>{ earned }</p>
-  </StyledStakeItemTextWithButton>
-
-  <StyledStakeItemButton activeButton={ false }>
-      {t("STAKE.HARVEST")} <img src={HarvestIcon} alt="" />
-  </StyledStakeItemButton>
-</StyledStakeItemRowWithButton>
-<StyledStakeItemRowWithButton>
-  <StyledStakeItemTextWithButton>
-      <span>METO {t("STAKE.INSTAKE")}</span>
-      <p>{ inStake }</p>
-  </StyledStakeItemTextWithButton>
-
-  <StyledStakeItemButton activeButton={false}>
-      Windraw
-      <img src={WithdrawIcon} alt="" />
-  </StyledStakeItemButton>
-</StyledStakeItemRowWithButton>
-</div>: null}
+     <div>
+        <StyledStakeItemTextWithButton style={{'margin-top': '25px'}}>
+           <span>{t("SWAP.AVAILABLE")} <br />{availableNft}</span>
+        </StyledStakeItemTextWithButton>
+         <StyledStakeItemTextWithButton style={{'margin-top': '30px'}}>
+           <span>{t("SWAP.REMAINING")} <br />{remainingNft}</span> 
+        </StyledStakeItemTextWithButton>
+     </div>
+     <StyledStakeItemButton activeButton={ availableNft > 0 } onClick={ availableNft > 0 ? claimOshiNft : null} style={{'padding-top': '40px','padding-bottom': '40px','padding-right': '12.5px', 'padding-left': '12.5px'}}>
+        {t("SWAP.CLAIM")}
+      </StyledStakeItemButton>
+  </StyledStakeItemRowWithButton> : null}
    
    {version == "3" ? <div>
     <StyledStakeItemRowWithButton>
@@ -524,15 +540,24 @@ export const StakeItem = ({
 <StyledStakeItemAccountId>Connected as { `${account.slice(0, 6)}...${account.slice(38, 42)}` }</StyledStakeItemAccountId>
 : null
 }
-</div> : version == "4" ? <StyledStakeItemRowWithButton>
-      <StyledStakeItemButton activeButton={true } className="sleep">
-      {t("STAKE.SOON")}
-         <img src={SleepIcon} alt="" width="18" height="18"/>
+</div> : version == "4" ? <div>
+   <StyledStakeItemRowWithButton>
+   <StyledStakeItemButton  onClick={handleStake} activeButton={approved} style={{ width: '100%' }}>
+          {t("SWAP.SWAPNFT")}
+    </StyledStakeItemButton>
+   </StyledStakeItemRowWithButton>
+      <StyledStakeItemRowWithButton>
+      <StyledStakeItemButton onClick={ needToApprove ? (!approved ? approve : () => {}) : handleUseConnection } activeButton={ !approved } style={{ width: '100%' }}>
+        { needToApprove ? (approved ? t("SWAP.APPROVED") : t("SWAP.APPROVE") ) : t("SWAP.CONNECT") }
+         <img src={WithdrawIcon} alt="" />
        </StyledStakeItemButton>
-</StyledStakeItemRowWithButton> : null}
-
-  </StyledStakeItemContainer>
-   : null}
-  </div>
+</StyledStakeItemRowWithButton>
+{ account ? 
+<StyledStakeItemAccountId>Connected as { `${account.slice(0, 6)}...${account.slice(38, 42)}` }</StyledStakeItemAccountId>
+: null
+}
+</div> : null}
+</StyledStakeItemContainer> : null}
+</div>
 );
 };

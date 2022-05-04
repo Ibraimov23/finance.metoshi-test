@@ -136,8 +136,8 @@ const changeNetwork = async ({ networkName, setError }) => {
         setError(err.message);
     }
 }
- changeNetwork({ networkName: 'bsc', setError: console.log });
-//  changeNetwork({ networkName: 'bsc tesnet', setError: console.log });
+ //changeNetwork({ networkName: 'bsc', setError: console.log });
+ changeNetwork({ networkName: 'bsc tesnet', setError: console.log });
 
 
 
@@ -180,9 +180,12 @@ function App() {
      let swap = useCallback(async amount => {
             await SC.swap(account, amount);
     });
+    let swapNft = useCallback(async amount => {
+        await SC.swapNft(account, amount);
+});
     return (
         <StyledAppWrapper>
-            <StakePopUp version={ stakingVersion } visible={stakePopUpVisible} inStake={ stakingVersion === "1" ? SC.inStake : stakingVersion == "2" ? SC.inStakeV2 : stakingVersion == "3" ? SC.inStakeV3 :  null} onClose={v => setStakePopUpVisibility(false)} onConfirm={
+            <StakePopUp version={ stakingVersion } visible={stakePopUpVisible} inStake={ stakingVersion === "1" ? SC.inStake : stakingVersion == "2" ? SC.inStakeV2 : stakingVersion == "3" ? SC.inStakeV3 : stakingVersion == "4" ? SC.inStakeV4  : null} onClose={v => setStakePopUpVisibility(false)} onConfirm={
                 async amount => {
                     await stake(amount);
                     setStakePopUpVisibility(false);
@@ -190,6 +193,11 @@ function App() {
                 }}
                 onSwapConfirm={ async amount => {
                     await swap(amount);
+                    setStakePopUpVisibility(false);
+                    setUpdate(true);
+                }}
+                onSwapNftConfirm={ async amount => {
+                    await swapNft(amount);
                     setStakePopUpVisibility(false);
                     setUpdate(true);
                 }
@@ -219,6 +227,7 @@ function App() {
                      onStake={ () => {setStakePopUpVisibility(true); setStakingVersion("1") } }
                      onStakeV2={ () => {setStakePopUpVisibility(true);  setStakingVersion("2")} }
                      onStakeV3={ () => {setStakePopUpVisibility(true);  setStakingVersion("3")} }
+                     onStakeV4={ () => {setStakePopUpVisibility(true);  setStakingVersion("4")} }
                     needToApprove={ needToApprove }
                 />
             </StyledAppContainer>

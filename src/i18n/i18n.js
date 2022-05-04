@@ -42,6 +42,7 @@ i18n.use(initReactI18next).init({
         },
         SWAP: {
           SWAPMETO: "Swap METO to OSHI",
+          SWAPNFT: "Start OSHI Vesting",
           RATE: "Rate",
           AVAILABLE: "Available OSHI",
           REMAINING: "Remaining OSHI",

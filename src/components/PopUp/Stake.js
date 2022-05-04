@@ -111,7 +111,7 @@ const StyledStakeItemButton = styled.a`
 `;
 
 
-export const StakePopUp = ({version, visible, onClose, onConfirm, onSwapConfirm, inStake }) => {
+export const StakePopUp = ({version, visible, onClose, onConfirm, onSwapConfirm,onSwapNftConfirm, inStake }) => {
     let [ amount, setAmount ] = useState(0);
     const { t } = useTranslation();
     
@@ -127,6 +127,9 @@ export const StakePopUp = ({version, visible, onClose, onConfirm, onSwapConfirm,
         onSwapConfirm(amount);
     }, [ onSwapConfirm, amount ]);
 
+    const handleSwapNftConfirm = useCallback(() => {
+        onSwapNftConfirm(amount);
+    }, [ onSwapNftConfirm, amount ]);
     const handleInputChange = event => {
         setAmount(+event.target.value);
     }
@@ -153,6 +156,26 @@ export const StakePopUp = ({version, visible, onClose, onConfirm, onSwapConfirm,
         </StyledStakeButtonsRow>
     </PopUp>
     : version == "3" ? <PopUp label="Swap" visible={visible} onClose={ handleClose }>
+        <StyledStakeAmount>
+            <input type="text" value={ amount } onChange={ handleInputChange }/>
+            <div className="currency">
+                { inStake || '-' } METO
+                <img src={WalletIcon} alt="Wallet"/>
+            </div>
+        </StyledStakeAmount>
+        <StyledStakeButtonsRow>
+            <StyledStakeItemButton onClick={ handleClose }>
+                <span>
+                   {t("SWAP.CANCEL")}
+                </span>
+            </StyledStakeItemButton>
+            <StyledStakeItemButton onClick={ () => { handleSwapConfirm() } } activeButton={ true }>
+                <span>
+                   {t("SWAP.CONFIRM")}
+                </span>
+            </StyledStakeItemButton>
+        </StyledStakeButtonsRow>
+    </PopUp> : version == "4" ? <PopUp label="Swap" visible={visible} onClose={ handleClose }>
         <StyledStakeAmount>
             <input type="text" value={ amount } onChange={ handleInputChange }/>
             <div className="currency">

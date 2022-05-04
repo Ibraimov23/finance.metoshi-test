@@ -3,6 +3,7 @@ import tokenTestABI from './assets/data/tokenTestAbi.json';
 import stakingABI from './assets/data/stakingABI.json';
 import stakingV2ABI from './assets/data/stakingV2ABI.json';
 import swappingABI from './assets/data/swappingABI.json';
+import swappingNftABI from './assets/data/swappingNftABI.json';
 import { ethers } from "ethers";
 import Web3 from 'web3';
 import BigNumber from "bignumber.js";
@@ -80,10 +81,12 @@ export class SC {
     static stakingContract;
     static stakingContractV2;
     static swappingContractAddress;
+    static swappingContractAddressNft;
     static web3ojb;
     static tokenInst;
     static tokenInst2;
     static tokenSwap;
+    static nftSwap;
     static rewardV2;
     static config = {
         mainChainId: 56,
@@ -94,6 +97,8 @@ export class SC {
         stakingContractAddress: '0xbBD5c7139d50A4eFB6A03534E59CcA285faBa051',
         stakingContractV2Address: '0x6CCF448bAE762431B2Bae046b85fD730313Cbef3',
         swappingContractAddress: '0xFe6b030F8e437D321be0d39d27538D23645C6160',
+        swappingContractAddressNft: '0xc22891A610Cbc39ea69AD23Fcbf63055B63b5003',
+        
         mainWallet: '0x8B4754ae99F1e595481029c6835C6931442f5f02',
         timestamp: 1648163253
     };
@@ -101,13 +106,14 @@ export class SC {
     static inStake = 0;
     static inStakeV2 = 0;
     static inStakeV3 = 0;
-     
+    static inStakeV4 = 0;
 static async init(_provider) {
     SC.web3ojb = new Web3(_provider);
     SC.tokenInstMeto = new SC.web3ojb.eth.Contract(tokenABI, SC.config.tokenContractAddress)
     SC.tokenInst = new SC.web3ojb.eth.Contract(stakingABI, SC.config.stakingContractAddress)
     SC.tokenInst2 = new SC.web3ojb.eth.Contract(stakingV2ABI, SC.config.stakingContractV2Address)
     SC.tokenSwap = new SC.web3ojb.eth.Contract(swappingABI, SC.config.swappingContractAddress)
+    SC.nftSwap = new SC.web3ojb.eth.Contract(swappingNftABI, SC.config.swappingContractAddressNft)
     const provider = new ethers.providers.Web3Provider(_provider), signer = provider.getSigner();
 
     if (!SC.tokenContract) {
@@ -116,6 +122,7 @@ static async init(_provider) {
         SC.stakingContract = new ethers.Contract(SC.config.stakingContractAddress, stakingABI, signer);
         SC.stakingContractV2 = new ethers.Contract(SC.config.stakingContractV2Address, stakingV2ABI, signer);
         SC.swappingContract = new ethers.Contract(SC.config.swappingContractAddress, swappingABI, signer);
+        SC.swappingContractNft = new ethers.Contract(SC.config.swappingContractAddressNft, swappingNftABI, signer);
     }
 }
 
@@ -347,5 +354,65 @@ static async getInStakeV3(account) {
     const balance = bigInt(await SC.tokenInstMeto.methods.balanceOf(account).call());
     SC.inStakeV3 = String(balance.value / 10n ** 18n);
     return String(balance.value / 10n ** 18n);
+}
+
+
+
+
+static async swapNft(account, amount) {
+    amount = new BigNumber(amount * 10 ** 18); 
+     SC.tokenSwap.methods.deposit(amount.toFixed())
+    .send({from: account})
+        .then(function(result){
+            console.log(result)
+    });
+}
+
+static async RateNft() {
+    let count = await SC.nftSwap.methods.getTokenProportion().call();
+    let result = bigInt(10000000000) / bigInt(count);
+    return Math.trunc(result) * 1000;
+}
+
+static async availableNft(account) {
+    let card = await SC.nftSwap.methods.getUserCardAmount(account).call();
+    let count = await SC.nftSwap.methods.checkReward(account,card).call();
+    let result = parseInt(count / 10 ** 17).toString();
+    return result > 0 ? result.substring(0, result.length - 1) + '.' + result.substring(result.length - 1, result.length) : result;
+}
+static async remainingNft(account) {
+    let card = await SC.nftSwap.methods.getUserCardAmount(account).call();
+    let count = await SC.nftSwap.methods.getInformation(account,card).call();
+    let result =  parseInt(count[1] / 10 ** 17).toString();
+    return result > 0 ? result.substring(0, result.length - 1) + '.' + result.substring(result.length - 1, result.length) : result;
+}
+static async claimOshiNft(account) {
+    let card = await SC.nftSwap.methods.getUserCardAmount(account).call();
+    SC.nftSwap.methods.release(parseInt(card))
+    .send({from: account})
+        .then(function(result){
+            console.log(result)
+    });
+}
+static async approveV4() {
+    const bigNumberValue = ethers.utils.parseEther((1000000000000000000000000000n).toString());
+    const contract = SC.tokenContractTest;
+    
+    try {
+        let approval = await contract.approve(SC.config.swappingContractAddressNft, bigNumberValue);
+        return !!approval;
+    } catch (e) { throw e }
+}
+static async allowanceV4(account) {
+    const contract = SC.tokenContractTest;
+    try {
+        let approvedRaw = await contract.allowance(account, SC.swappingContractNft.address);
+        console.log('APPROVED_VALUE', approvedRaw);
+        if (approvedRaw) {
+            let approved = parseInt(approvedRaw._hex, '16');
+            if (approved) return true;
+        }
+        return false;
+    } catch(e) { throw e }
 }
 }
