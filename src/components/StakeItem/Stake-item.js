@@ -204,6 +204,7 @@ export const StakeItem = ({
     let [ remaining, setRemaining ] = useState(0);
     let [ availableNft, setAvailableNft ] = useState(0);
     let [ remainingNft, setRemainingNft ] = useState(0);
+    let [ balanceNft, setBalanceNft ] = useState(0);
 
     const { t } = useTranslation();
 
@@ -236,13 +237,21 @@ export const StakeItem = ({
         await SC.claimOshi(account);
       }
   }, [ version, account ]);
+
   const claimOshiNft = useCallback(async () => {
     if (version === "4") {
       await SC.claimOshiNft(account);
     }
 }, [ version, account ]);
+
+const swapNft = useCallback(async () => {
+  if (version === "4") {
+    await SC.swapNft(account);
+  }
+}, [ version, account ]);
+
     const updateData = useCallback(async () => {
-      let inStakeRaw, earnedRaw, holdingTimeRaw, stackedTimeRaw,unlockReward,inStakeRawV2,availabReward,remainReward,inStakeRawV3,availabNftReward,remainNftReward;
+      let inStakeRaw, earnedRaw, holdingTimeRaw, stackedTimeRaw,unlockReward,inStakeRawV2,availabReward,remainReward,inStakeRawV3,availabNftReward,remainNftReward,balanceNftReward;
       if (version === "1") {
           inStakeRaw = await SC.getInStake(account);
           earnedRaw = await SC.getEarned(account);
@@ -267,10 +276,10 @@ export const StakeItem = ({
       } else if (version === "4") {
         availabNftReward = await SC.availableNft(account);
         remainNftReward = await SC.remainingNft(account);
-        inStakeRawV3 = await SC.getInStakeV3(account);
-        setInStake(inStakeRawV3);
+        balanceNftReward = await SC.balanceNft(account);
         setAvailableNft(availabNftReward);
         setRemainingNft(remainNftReward);
+        setBalanceNft(balanceNftReward)
        }
         if(version === "1") {
           setCanHarvest(true);
@@ -542,7 +551,7 @@ export const StakeItem = ({
 }
 </div> : version == "4" ? <div>
    <StyledStakeItemRowWithButton>
-   <StyledStakeItemButton  onClick={handleStake} activeButton={approved} style={{ width: '100%' }}>
+   <StyledStakeItemButton  onClick={approved && balanceNft > 0 ? swapNft : null} activeButton={approved && balanceNft > 0} style={{ width: '100%' }}>
           {t("SWAP.SWAPNFT")}
     </StyledStakeItemButton>
    </StyledStakeItemRowWithButton>

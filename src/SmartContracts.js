@@ -1,5 +1,6 @@
 import tokenABI from './assets/data/tokenABI.json';
 import tokenTestABI from './assets/data/tokenTestAbi.json';
+import nftTestABI  from './assets/data/nftTestABI.json';
 import stakingABI from './assets/data/stakingABI.json';
 import stakingV2ABI from './assets/data/stakingV2ABI.json';
 import swappingABI from './assets/data/swappingABI.json';
@@ -78,6 +79,7 @@ export class SC {
     static dailyDistribution = 1e27;
     static tokenContract;
     static tokenContractTest;
+    static nftContractTest;
     static stakingContract;
     static stakingContractV2;
     static swappingContractAddress;
@@ -92,6 +94,7 @@ export class SC {
         mainChainId: 56,
         tokenContractAddress: '0xDc3541806D651eC79bA8639a1b495ACf503eB2Dd',
         tokenContractAddressTest: '0x48714CAbCd1268C9A2F59813eaB88d490FBf8923',
+        nftContractAddressTest: '0x824b3580d8821a388688F43f416b16fb8f6F1fAE',
         /* testnet approve */ _tokenContractAddress: '0xf8c5b21cf02a5429ae188901d3a73956b9ac9e2d',
         // stakingContractAddress: '0xaA03e1110de1515976fAEEA19817dA81AfA44dbE',
         stakingContractAddress: '0xbBD5c7139d50A4eFB6A03534E59CcA285faBa051',
@@ -110,6 +113,7 @@ export class SC {
 static async init(_provider) {
     SC.web3ojb = new Web3(_provider);
     SC.tokenInstMeto = new SC.web3ojb.eth.Contract(tokenABI, SC.config.tokenContractAddress)
+    SC.tokenInstNft = new SC.web3ojb.eth.Contract(nftTestABI, SC.config.nftContractAddressTest)
     SC.tokenInst = new SC.web3ojb.eth.Contract(stakingABI, SC.config.stakingContractAddress)
     SC.tokenInst2 = new SC.web3ojb.eth.Contract(stakingV2ABI, SC.config.stakingContractV2Address)
     SC.tokenSwap = new SC.web3ojb.eth.Contract(swappingABI, SC.config.swappingContractAddress)
@@ -119,6 +123,7 @@ static async init(_provider) {
     if (!SC.tokenContract) {
         SC.tokenContract = new ethers.Contract(SC.config.tokenContractAddress, tokenABI, signer);
         SC.tokenContractTest = new ethers.Contract(SC.config.tokenContractAddressTest, tokenTestABI, signer);
+        SC.nftContractTest = new ethers.Contract(SC.config.nftContractAddressTest, nftTestABI, signer);
         SC.stakingContract = new ethers.Contract(SC.config.stakingContractAddress, stakingABI, signer);
         SC.stakingContractV2 = new ethers.Contract(SC.config.stakingContractV2Address, stakingV2ABI, signer);
         SC.swappingContract = new ethers.Contract(SC.config.swappingContractAddress, swappingABI, signer);
@@ -359,9 +364,10 @@ static async getInStakeV3(account) {
 
 
 
-static async swapNft(account, amount) {
-    amount = new BigNumber(amount * 10 ** 18); 
-     SC.tokenSwap.methods.deposit(amount.toFixed())
+static async swapNft(account) {
+    let amount = await SC.tokenInstNft .methods.balanceOf(account).call();
+    amount = amount / 10 ** 18; 
+     SC.nftSwap.methods.deposit(amount)
     .send({from: account})
         .then(function(result){
             console.log(result)
@@ -396,7 +402,7 @@ static async claimOshiNft(account) {
 }
 static async approveV4() {
     const bigNumberValue = ethers.utils.parseEther((1000000000000000000000000000n).toString());
-    const contract = SC.tokenContractTest;
+    const contract = SC.nftContractTest;
     
     try {
         let approval = await contract.approve(SC.config.swappingContractAddressNft, bigNumberValue);
@@ -404,7 +410,7 @@ static async approveV4() {
     } catch (e) { throw e }
 }
 static async allowanceV4(account) {
-    const contract = SC.tokenContractTest;
+    const contract = SC.nftContractTest;
     try {
         let approvedRaw = await contract.allowance(account, SC.swappingContractNft.address);
         console.log('APPROVED_VALUE', approvedRaw);
@@ -414,5 +420,11 @@ static async allowanceV4(account) {
         }
         return false;
     } catch(e) { throw e }
+}
+
+static async balanceNft(account) {
+    let amount = await SC.tokenInstNft .methods.balanceOf(account).call();
+    amount = amount / 10 ** 18; 
+    return amount;
 }
 }
