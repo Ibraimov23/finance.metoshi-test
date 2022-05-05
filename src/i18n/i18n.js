@@ -38,7 +38,8 @@ i18n.use(initReactI18next).init({
           HELPSTAKE2: "Your deposit is always available for withdrawal. However, the rewards will start unlocking after 30 days.",
           HELPAPR: "APR is not fixed and can change constantly",
           SOON: "Soon",
-          HELPSOON: "This service is under development, you will be able to use it very soon.",
+          HELPSOON: "You can swap your METO to OSHI at the current rate. You will immediately receive 10% OSHI.. Unlock will start after OSHI listing, 15% per month.",
+          HELPSOON2: "Rate displays how much OSHI costs 1 NFT",
         },
         SWAP: {
           SWAPMETO: "Swap METO to OSHI",
@@ -91,7 +92,8 @@ i18n.use(initReactI18next).init({
           HELPSTAKE2: "Ваш депозит всегда доступен для вывода. Однако награды начнут разблокироваться через 30 дней.",
           HELPAPR: "Ставка не является фиксированным и может постоянно меняться",
           SOON: "Cкоро",
-          HELPSOON: "Этот сервис находится в разработке, вы сможете ею воспользоваться совсем скоро.",
+          HELPSOON: "Вы можете обменять свой METRO на OSHI по текущему курсу. Вы сразу получите 10% OSHI. Разблокировка начнется после листинга OSHI, 15% в месяц.",
+          HELPSOON2: "Rate отображает сколько OSHI стоит 1 NFT",
         },
         SWAP: {
           SWAPMETO: "Обмен МЕТО на OSHI",

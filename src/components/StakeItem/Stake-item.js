@@ -497,7 +497,7 @@ const swapNft = useCallback(async () => {
    <span class="i">
     <img src={HelpIcon} alt="" />
     <span class="tooltip">	
-        {t("SWAP.HELPSWAP2")}
+        {t("STAKE.HELPSOON2")}
     </span>
    </span>
   </StyledStakeItemHelp>
