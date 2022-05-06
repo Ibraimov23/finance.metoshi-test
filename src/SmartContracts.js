@@ -366,8 +366,8 @@ static async getInStakeV3(account) {
 
 static async swapNft(account) {
     let amount = await SC.tokenInstNft .methods.balanceOf(account).call();
-    amount = amount / 10 ** 18; 
-     SC.nftSwap.methods.deposit(amount)
+    amount = new BigNumber(amount); 
+     SC.nftSwap.methods.deposit(amount.toFixed())
     .send({from: account})
         .then(function(result){
             console.log(result)
