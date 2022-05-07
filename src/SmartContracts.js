@@ -94,13 +94,13 @@ export class SC {
         mainChainId: 56,
         tokenContractAddress: '0xDc3541806D651eC79bA8639a1b495ACf503eB2Dd',
         tokenContractAddressTest: '0x48714CAbCd1268C9A2F59813eaB88d490FBf8923',
-        nftContractAddressTest: '0x824b3580d8821a388688F43f416b16fb8f6F1fAE',
+        nftContractAddressTest: '0x1A61C1378929756C6fC10d601Ca6209350F80A40',
         /* testnet approve */ _tokenContractAddress: '0xf8c5b21cf02a5429ae188901d3a73956b9ac9e2d',
         // stakingContractAddress: '0xaA03e1110de1515976fAEEA19817dA81AfA44dbE',
         stakingContractAddress: '0xbBD5c7139d50A4eFB6A03534E59CcA285faBa051',
         stakingContractV2Address: '0x6CCF448bAE762431B2Bae046b85fD730313Cbef3',
         swappingContractAddress: '0xFe6b030F8e437D321be0d39d27538D23645C6160',
-        swappingContractAddressNft: '0xc22891A610Cbc39ea69AD23Fcbf63055B63b5003',
+        swappingContractAddressNft: '0x10be54041d15F3cddCF7Ab05c6DCEA866CAC8BfF',
         
         mainWallet: '0x8B4754ae99F1e595481029c6835C6931442f5f02',
         timestamp: 1648163253
