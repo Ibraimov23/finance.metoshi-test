@@ -66,7 +66,7 @@ export const Navigation = ({ handleBurgerClick }) => {
   const { t } = useTranslation();
 
   return (
-    <header>
+    <header style={{'display': 'flex'}}>
     <StyledNavContainer>
       <StyledBurger>
         <Burger />
@@ -83,7 +83,7 @@ export const Navigation = ({ handleBurgerClick }) => {
               {t("SWAP.BUY")}
              <img src={WithdrawIcon} alt="" />
           </StyledStakeItemButton>
-      </div>
+    </div>
     </header>
   );
 };
