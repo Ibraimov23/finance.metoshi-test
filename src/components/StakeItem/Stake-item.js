@@ -70,7 +70,7 @@ const StyledStakeItemRowWithButton = styled.div`
   gap: 20px;
 `;
 
-const StyledStakeItemButton = styled.a`
+export const StyledStakeItemButton = styled.a`
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -514,9 +514,15 @@ const swapNft = useCallback(async () => {
            <span>{t("SWAP.REMAINING")} <br />{remaining}</span> 
         </StyledStakeItemTextWithButton>
      </div>
-     <StyledStakeItemButton activeButton={ available > 0 } onClick={ available > 0 ? claimOshi : null} style={{'padding-top': '40px','padding-bottom': '40px','padding-right': '12.5px', 'padding-left': '12.5px'}}>
+     <div>
+     <StyledStakeItemButton activeButton={ true } href="https://pancakeswap.finance/swap?outputCurrency=0xDc3541806D651eC79bA8639a1b495ACf503eB2Dd" style={{'margin-bottom': '4vh', 'textDecoration': 'none'}}>
+        {t("SWAP.BUY")}
+        <img src={WithdrawIcon} alt="" />
+      </StyledStakeItemButton>
+     <StyledStakeItemButton activeButton={ available > 0 } onClick={ available > 0 ? claimOshi : null}>
         {t("SWAP.CLAIM")}
       </StyledStakeItemButton>
+    </div>
   </StyledStakeItemRowWithButton>
   : version == "4" ?
   <StyledStakeItemRowWithButton>
@@ -528,9 +534,15 @@ const swapNft = useCallback(async () => {
            <span>{t("SWAP.REMAINING")} <br />{remainingNft}</span> 
         </StyledStakeItemTextWithButton>
      </div>
-     <StyledStakeItemButton activeButton={ availableNft > 0 } onClick={ availableNft > 0 ? claimOshiNft : null} style={{'padding-top': '40px','padding-bottom': '40px','padding-right': '12.5px', 'padding-left': '12.5px'}}>
+     <div>
+     <StyledStakeItemButton activeButton={ true } href="https://pancakeswap.finance/swap?outputCurrency=0xDc3541806D651eC79bA8639a1b495ACf503eB2Dd" style={{'margin-bottom': '4vh', 'textDecoration': 'none'}}>
+        {t("SWAP.BUY")}
+        <img src={WithdrawIcon} alt="" />
+      </StyledStakeItemButton>
+      <StyledStakeItemButton activeButton={ availableNft > 0 } onClick={ availableNft > 0 ? claimOshiNft : null}>
         {t("SWAP.CLAIM")}
       </StyledStakeItemButton>
+      </div>
   </StyledStakeItemRowWithButton> : null}
    
    {version == "3" ? <div>

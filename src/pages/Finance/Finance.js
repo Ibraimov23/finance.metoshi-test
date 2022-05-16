@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as HeaderDevider } from "../../assets/svg/metoshi-underline.svg";
-import { StakeItem } from "../../components/StakeItem/Stake-item";
+import { StakeItem} from "../../components/StakeItem/Stake-item";
 
 const StyledHeader = styled.h1`
   font-style: normal;

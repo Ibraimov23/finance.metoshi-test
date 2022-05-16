@@ -55,6 +55,7 @@ i18n.use(initReactI18next).init({
           APPROVED: "Approved",
           HELPSWAP1: "You can swap your METO to OSHI at the current rate. You will immediately receive 10% OSHI.. Unlock will start after OSHI listing, 15% per month.",
           HELPSWAP2: "Rate displays how much METO costs 1 OSHI",
+          BUY: "BUY METO"
         },
       },
     },
@@ -108,6 +109,7 @@ i18n.use(initReactI18next).init({
           APPROVED: "Одобрено",
           HELPSWAP1: "Вы можете обменять свой METO на OSHI по текущему курсу. Вы сразу получите 10% OSHI. Разблокировка начнется после листинга OSHI, 15% в месяц.",
           HELPSWAP2: "Курс показывает сколько МЕТО стоит 1 OSHI",
+          BUY: "КУПИТЬ METO"
         },
       },
     },
