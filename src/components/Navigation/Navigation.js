@@ -7,7 +7,7 @@ import { ReactComponent as NavDevider } from "../../assets/svg/nav-devider.svg";
 import { ReactComponent as Burger } from "../../assets/svg/burger.svg";
 import { LangSelector } from "../Lang-selector/Lang-selector";
 import { useTranslation } from "react-i18next";
-import {StyledStakeItemButton } from "../../components/StakeItem/Stake-item";
+import {StyledStakeItemBuy } from "../../components/StakeItem/Stake-item";
 import WithdrawIcon from "../../assets/imgs/withdraw.png";
 
 const StyledNavContainer = styled.div`
@@ -57,9 +57,6 @@ const StyledBurger = styled.div`
   display: none;
   span {
   }
-  @media (max-width: 1240px) {
-    display: block;
-  }
 `;
 
 export const Navigation = ({ handleBurgerClick }) => {
@@ -79,10 +76,10 @@ export const Navigation = ({ handleBurgerClick }) => {
       </StyledButtonGroup>
     </StyledNavContainer>
     <div style={{'margin-left': 'auto'}}>
-          <StyledStakeItemButton activeButton={ true } href="https://pancakeswap.finance/swap?outputCurrency=0xDc3541806D651eC79bA8639a1b495ACf503eB2Dd" style={{'textDecoration': 'none'}}>
-              {t("SWAP.BUY")}
+          <StyledStakeItemBuy activeButton={ true } href="https://pancakeswap.finance/swap?outputCurrency=0xDc3541806D651eC79bA8639a1b495ACf503eB2Dd" style={{'textDecoration': 'none'}}>
+              <p className="text">{t("SWAP.BUY")}</p>
              <img src={WithdrawIcon} alt="" />
-          </StyledStakeItemButton>
+          </StyledStakeItemBuy>
     </div>
     </header>
   );

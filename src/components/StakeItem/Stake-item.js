@@ -70,29 +70,72 @@ const StyledStakeItemRowWithButton = styled.div`
   gap: 20px;
 `;
 
+export const StyledStakeItemBuy = styled.a`
+    cursor: pointer;
+    display: -webkit-box;
+    border-radius: 12px;
+    letter-spacing: 0.02em;
+    -webkit-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+    padding: 2vh 2vh 2vh 3vh;
+  ${(props) =>
+        props.activeButton &&
+        "background: linear-gradient(83.53deg, #B114FF 0, #B114FF 24.77%, #FF1493 100.89%);"}
+  ${(props) =>
+        props.activeButton &&
+        "&:hover { background-position: left center; background-size: 200%;}"}
+    
+  img {
+    margin-left: 12px;
+  }
+  &:hover {
+    background-position: right center;
+  }
+  p {
+    display: flex;
+    justify-content: center;
+    max-width: 20vh;
+    min-width: 12vh;
+    font-size: 2.55vh;
+    color: #fff;
+    font-weight: 500;
+    margin: auto;
+  }
+`;
+
 export const StyledStakeItemButton = styled.a`
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 21px 25px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0.1) 50.1%,
-    rgba(255, 255, 255, 0.2) 100%
-  );
-  background-size: 200%;
-  border-radius: 12px;
-  min-width: 200px;
-  text-align: center;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 140%;
-  letter-spacing: 0.02em;
-  color: #ffffff;
-  transition-duration: 0.2s;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 21px 25px;
+    background: linear-gradient( 90deg,rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.1) 50%,rgba(255,255,255,0.1) 50.1%,rgba(255,255,255,0.2) 100% );
+    background-size: 200%;
+    border-radius: 12px;
+    min-width: 24vh;
+    /text-align: center;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 140%;
+    -webkit-letter-spacing: 0.02em;
+    -moz-letter-spacing: 0.02em;
+    -ms-letter-spacing: 0.02em;
+    letter-spacing: 0.02em;
+    color: rgb(255,255,255);
+    -webkit-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+}
   ${(props) =>
         props.activeButton &&
         "background: linear-gradient(83.53deg, #B114FF 0, #B114FF 24.77%, #FF1493 100.89%);"}
@@ -132,6 +175,7 @@ const StyledStakeItemTextWithButton = styled.div`
     }
   }
 `;
+
 const StyledAPR = styled.div`
   display: flex;
   align-items: center;

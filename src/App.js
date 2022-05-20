@@ -33,6 +33,9 @@ const StyledAppContainer = styled.div`
   padding: 32px;
   margin: 0 auto;
   box-sizing: border-box;
+  @media (max-width: 650px) { 
+    padding: 32px 10px 32px 10px;
+  }
 `;
 
 const StyledFooterContainer = styled.div`

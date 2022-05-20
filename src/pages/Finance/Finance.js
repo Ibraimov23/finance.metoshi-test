@@ -14,7 +14,7 @@ const StyledHeader = styled.h1`
   color: #fff;
   text-align: center;
   @media (max-width: 600px) {
-    font-size: 80px;
+    font-size: 70px;
     line-height: 80px;
   }
 `;
