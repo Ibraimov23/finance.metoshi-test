@@ -469,7 +469,7 @@ const swapNft = useCallback(async () => {
               <p>{ inStake }</p>
           </StyledStakeItemTextWithButton>
 
-          <StyledStakeItemButton activeButton={ approved && canWithdraw} onClick={approved && canWithdraw ? withdraw : () => {}}>
+          <StyledStakeItemButton activeButton={ approved && canWithdraw} onClick={canWithdraw ? withdraw : () => {}}>
               {(activeButton && `${t("STAKE.STAKE")} METO`) ||
                   version == "1" ? `${t("STAKE.WITHDRAW1")}` : `${t("STAKE.WITHDRAW2")}`}{" "}
               <img src={WithdrawIcon} alt="" />

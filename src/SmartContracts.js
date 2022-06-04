@@ -240,6 +240,7 @@ static async harvest(account) {
 }
            
 static async withdraw(account,amount) {
+    amount = new BigNumber(amount * 10 ** 18);
     SC.tokenInst.methods.withdraw(amount)
     .send({from: account})
         .then(function(result){
