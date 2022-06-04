@@ -110,6 +110,7 @@ export class SC {
     static inStakeV2 = 0;
     static inStakeV3 = 0;
     static inStakeV4 = 0;
+    
 static async init(_provider) {
     SC.web3ojb = new Web3(_provider);
     SC.tokenInstMeto = new SC.web3ojb.eth.Contract(tokenABI, SC.config.tokenContractAddress)

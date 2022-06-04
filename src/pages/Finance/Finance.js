@@ -65,6 +65,7 @@ export const Finance = ({
     onUseConnection,
     account,
     onStake,
+    onWindraw,
     onStakeV2,
     onStakeV3,
     onStakeV4,
@@ -77,6 +78,10 @@ export const Finance = ({
     const handleUseConnection = useCallback(() => {
         onUseConnection();
     }, [ onUseConnection ])
+
+    const handleWindraw = useCallback(() => {
+      onWindraw();
+ }, [ onWindraw ])
 
      const handleStake = useCallback(() => {
          onStake();
@@ -109,6 +114,7 @@ const handleStake4 = useCallback(() => {
                     onUseConnection={ handleUseConnection }
                     account={ account }
                     onStake={ handleStake }
+                    onWindraw={handleWindraw}
                     needToApprove={ needToApprove }
                     update={ update }
                     provider={ provider }

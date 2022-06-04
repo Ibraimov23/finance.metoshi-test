@@ -10,6 +10,7 @@ import { WalletConnectPopUp } from "./components/PopUp/WalletConnect";
 import { useMetaMask } from './hooks/MetaMask';
 import { useWalletConnect } from "./hooks/WalletConnect";
 import { StakePopUp } from "./components/PopUp/Stake";
+import { WindrawPopUp } from "./components/PopUp/Windraw";
 import { SC } from './SmartContracts';
 import { walletConnectProvider } from "./components/Connections/WalletConnectConnector";
 import { version } from "process";
@@ -149,12 +150,14 @@ function App() {
 
     let [ popUpVisible, setPopUpVisibility ] = useState(false);
     let [ stakePopUpVisible, setStakePopUpVisibility ] = useState(false);
+    let [ windrawPopUpVisible, setWindrawPopUpVisibility ] = useState(false);
 
     let { Mconnect, MisActive, Maccount } = useMetaMask();
     let { Wconnect, WisActive, Waccount } = useWalletConnect();
     let [ account, setAccount ] = useState(false);
     let [ active, setActive ] = useState(false);
     let [ stakingVersion, setStakingVersion ] = useState("1");
+    let [ windrawVersion, setWindrawVersion ] = useState("1");
     let [ walletType, setWalletType ] = useState(null);
 
     let [ update, setUpdate ] = useState(false);
@@ -185,7 +188,12 @@ function App() {
     });
     let swapNft = useCallback(async amount => {
         await SC.swapNft(account, amount);
-});
+    });
+    let windraw = useCallback(async amount => {
+        if (windrawVersion === "1") {
+        await SC.withdraw(account, amount);
+        }
+    });
     return (
         <StyledAppWrapper>
             <StakePopUp version={ stakingVersion } visible={stakePopUpVisible} inStake={ stakingVersion === "1" ? SC.inStake : stakingVersion == "2" ? SC.inStakeV2 : stakingVersion == "3" ? SC.inStakeV3 : stakingVersion == "4" ? SC.inStakeV4  : null} onClose={v => setStakePopUpVisibility(false)} onConfirm={
@@ -206,6 +214,14 @@ function App() {
                 }
             }>
             </StakePopUp>
+            <WindrawPopUp version={ windrawVersion } visible={windrawPopUpVisible} inStake={ windrawVersion === "1" ? SC.inStake :  null} onClose={v => setWindrawPopUpVisibility(false)} onConfirm={
+                async amount => {
+                    await windraw(amount);
+                    setWindrawPopUpVisibility(false);
+                    setUpdate(true);
+                }
+            }>
+            </WindrawPopUp>
             <WalletConnectPopUp visible={ active ? !active : popUpVisible } onClose={v => setPopUpVisibility(false)} onConnect={
                 async wallet => {
                     if (wallet === 'MetaMask') {
@@ -230,7 +246,7 @@ function App() {
                      onStake={ () => {setStakePopUpVisibility(true); setStakingVersion("1") } }
                      onStakeV2={ () => {setStakePopUpVisibility(true);  setStakingVersion("2")} }
                      onStakeV3={ () => {setStakePopUpVisibility(true);  setStakingVersion("3")} }
-                     onStakeV4={ () => {setStakePopUpVisibility(true);  setStakingVersion("4")} }
+                     onWindraw={ () => {setWindrawPopUpVisibility(true);  setWindrawVersion("1")} }
                     needToApprove={ needToApprove }
                 />
             </StyledAppContainer>

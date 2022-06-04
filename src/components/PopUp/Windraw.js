@@ -111,7 +111,7 @@ const StyledStakeItemButton = styled.a`
 `;
 
 
-export const StakePopUp = ({version, visible, onClose, onConfirm, onSwapConfirm,onWindrawConfirm, inStake }) => {
+export const WindrawPopUp = ({version, visible, onClose, onConfirm, inStake }) => {
     let [ amount, setAmount ] = useState(0);
     const { t } = useTranslation();
     
@@ -122,20 +122,12 @@ export const StakePopUp = ({version, visible, onClose, onConfirm, onSwapConfirm,
     const handleConfirm = useCallback(() => {
         onConfirm(amount);
     }, [ onConfirm, amount ]);
-    
-    const handleSwapConfirm = useCallback(() => {
-        onSwapConfirm(amount);
-    }, [ onSwapConfirm, amount ]);
-
-    const handleWindrawConfirm = useCallback(() => {
-        onWindrawConfirm(amount);
-    }, [ onWindrawConfirm, amount ]);
 
     const handleInputChange = event => {
         setAmount(+event.target.value);
     }
 
-    return version == "1" || version == "2" ? <PopUp label="Stake METO" visible={visible} onClose={ handleClose }>
+    return version == "1" ? <PopUp label="Withdraw METO" visible={visible} onClose={ handleClose }>
         <StyledStakeAmount>
             <input type="text" value={ amount } onChange={ handleInputChange }/>
             <div className="currency">
@@ -156,25 +148,5 @@ export const StakePopUp = ({version, visible, onClose, onConfirm, onSwapConfirm,
             </StyledStakeItemButton>
         </StyledStakeButtonsRow>
     </PopUp>
-    : version == "3" ? <PopUp label="Swap" visible={visible} onClose={ handleClose }>
-        <StyledStakeAmount>
-            <input type="text" value={ amount } onChange={ handleInputChange }/>
-            <div className="currency">
-                { inStake || '-' } METO
-                <img src={WalletIcon} alt="Wallet"/>
-            </div>
-        </StyledStakeAmount>
-        <StyledStakeButtonsRow>
-            <StyledStakeItemButton onClick={ handleClose }>
-                <span>
-                   {t("SWAP.CANCEL")}
-                </span>
-            </StyledStakeItemButton>
-            <StyledStakeItemButton onClick={ () => { handleSwapConfirm() } } activeButton={ true }>
-                <span>
-                   {t("SWAP.CONFIRM")}
-                </span>
-            </StyledStakeItemButton>
-        </StyledStakeButtonsRow>
-    </PopUp> : null
+     : null
 }

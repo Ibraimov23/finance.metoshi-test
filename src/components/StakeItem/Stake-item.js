@@ -232,6 +232,7 @@ export const StakeItem = ({
     onUseConnection,
     account,
     onStake,
+    onWindraw,
     needToApprove,
     provider
 }, ref) => {
@@ -259,6 +260,10 @@ export const StakeItem = ({
     const handleStake = useCallback(() => {
         onStake();
     }, [ onStake ])
+
+    const handleWindraw = useCallback(() => {
+      onWindraw();
+  }, [ onWindraw ])
   
     const harvest = useCallback(async () => {
         if (version === "1") {
@@ -270,7 +275,7 @@ export const StakeItem = ({
 
     const withdraw = useCallback(async () => {
         if (version === "1") {
-          await SC.withdraw(account, SC.inStake);
+          handleWindraw();
         } else if (version === "2") {
           await SC.withdrawV2(account, SC.inStakeV2);
         }
@@ -464,7 +469,7 @@ const swapNft = useCallback(async () => {
               <p>{ inStake }</p>
           </StyledStakeItemTextWithButton>
 
-          <StyledStakeItemButton activeButton={ approved && canWithdraw} onClick={ approved && canWithdraw ? withdraw : () => {} }>
+          <StyledStakeItemButton activeButton={ approved && canWithdraw} onClick={approved && canWithdraw ? withdraw : () => {}}>
               {(activeButton && `${t("STAKE.STAKE")} METO`) ||
                   version == "1" ? `${t("STAKE.WITHDRAW1")}` : `${t("STAKE.WITHDRAW2")}`}{" "}
               <img src={WithdrawIcon} alt="" />
